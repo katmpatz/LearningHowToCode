@@ -1,0 +1,78 @@
+.main-grid{
+    display: grid;
+    grid-template-columns: 16vw 42vw 42vw;
+    grid-template-rows: 100vh;
+}
+
+.sidebar{
+    grid-column: 1;
+    grid-row: 1;
+    background-color: #C3C8E1;
+}
+
+.block{
+    height: 40px;
+    width: 80px;
+    border-radius: 2px;
+    color: white;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    margin-right: 15px;
+    margin-bottom: 15px;
+    background-color: #FBBB40;
+    border: 3px solid #CF931E;
+}
+
+.coding-panel{
+    grid-column: 2;
+    grid-row: 1;
+    background-color: #E1E7FF;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 20vh 1fr 15vh;
+}
+
+.description{
+    margin-top:20px;
+    margin-left:20px;
+}
+
+.buttons-panel{
+    grid-row: 3;
+    align-self: end;
+    justify-self: end;
+}
+
+
+.round-btn{
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+    color: white;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    margin-right: 15px;
+    margin-bottom: 15px;
+}
+
+#help-btn{
+    background-color: #FBBB40;
+    border: 5px solid #CF931E;
+}
+
+#play-btn{
+    background-color: #40FBD9;
+    border: 5px solid #00B695;
+}
+
+#play-icon{
+    padding-left:8px;
+}
+
+.output{
+    grid-column: 3;
+    grid-row: 1;
+    background-image: url("background.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
