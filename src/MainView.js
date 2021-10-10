@@ -1,5 +1,8 @@
 import './Main.css';
 import React, { Component } from 'react' ;
+import Block from './block/blockPresenter';
+import BlockModel from './block/blockModel';
+import CommandModel from './command/commandModel';
 import {ReactComponent as HelpIcon} from './help.svg';
 import {ReactComponent as DeleteIcon} from './delete.svg';
 import {ReactComponent as PlayIcon} from './play_arrow.svg';
@@ -7,15 +10,20 @@ import rocket from './Rocket_Panda.png';
 import planet from './Supermarket_Planet.png';
 
 export default class MainView extends Component {
+  
   state = {
     blocks: [
-        {name:"Move Up",category:"wip", bgcolor: "yellow"},
-        {name:"Move Down", category:"wip", bgcolor:"pink"},
-        {name:"Move Right", category:"wip", bgcolor:"skyblue"},
-        {name:"Move Left", category:"wip", bgcolor:"skyblue"}
+        new BlockModel("Move Down", "move"),
+        new BlockModel("Move Up", "move"),
+        new BlockModel("Move Right", "if"),
+        new BlockModel("Move Left", "loop"),
       ],
-    commands: [],
+    commands: [new CommandModel(0, 0, "When play", 'move', 150, 0)],
+    lastTop: 150,
+    id:1,
+    order:1,
 }
+
 
 onDragStart = (ev, id) => {
     ev.dataTransfer.setData("id", id);
@@ -23,27 +31,98 @@ onDragStart = (ev, id) => {
 
 onDragOver = (ev) => {
     ev.preventDefault();
+    const dropY = ev.clientY;
+}
+
+moveCommandsDown = () =>{
+  var top = 150;
+  this.state.commands.sort(function(a, b){return a.order-b.order}).forEach((cm) => {
+    cm.top = top;
+    top =  top + 40;
+    console.log("top " + cm.name + ": " + cm.top);
+  })
+  return this.state.commands;
+}
+
+changeOrder = (index) =>{
+  this.state.commands.slice(Math.max(this.state.commands.length - index, 0))
+  .forEach((cm, i) => {
+    cm.order = cm.order + 1;
+  });
+
+  var commands = this.state.commands;
+
+  this.setState({
+      ...this.state, commands
+  });
 }
 
 onDrop = (ev, action) => {
-   let id = ev.dataTransfer.getData("id");
+   let id = 0, top = 0, left = 0;
+   let bname = ev.dataTransfer.getData("id");
+   const bl = this.state.blocks.find(element => element.name === bname);
+   let name = bl.name;
+   let category =  bl.category;
 
-   const bl = this.state.blocks.find(element => element.name == id);
+   console.log("dropY: " + ev.clientY);
+   //position when the user drop the item
+   const dropY = ev.clientY;
 
-   this.state.commands.push(bl);
-   console.log(this.state.commands)
+   //add the block at the commands
+   
 
-   var commands = this.state.commands;
+   //find the closest command at the drop position
+   var index = this.state.commands.length;
+   console.log("Index1: " + index);
+
+   var minDifferenceTop = this.state.lastTop; 
+   if(dropY < minDifferenceTop && dropY > 150){
+    for(var i=1; i<= this.state.commands.length; i++){
+      if(dropY > this.state.commands[i-1].top && dropY < this.state.commands[i].top){
+        minDifferenceTop = this.state.commands[i-1].top;
+        //add the item on the top of the current one
+        index = i - 1;
+        console.log("Index2: " + index);
+      }
+    } 
+    //place it on the top of the first element which dropY < cm.top
+    top = minDifferenceTop; 
+    this.changeOrder(index + 2);
+   } else {
+     //place it on the bottom of the last element
+    top = minDifferenceTop + 40;
+   }
+    
+  id = this.state.id;
+  this.state.id += 1;
+  console.log("Top " + top);
+
+  // create new command object 
+  const c = new  CommandModel(id, index, name, category, top, left);
+  
+  //add command at the list
+  this.state.commands.splice(index, 0, c);
+  
+  this.state.lastTop = this.state.commands.slice(-1)[0].top;
+   
+   console.log(this.state.commands);
+
+   var commands = this.moveCommandsDown();
 
    this.setState({
        ...this.state, commands
    });
 }
 
+
 onDropDelete = (ev) => {
   let id = ev.dataTransfer.getData("id");
 
-  const commands = this.state.commands.filter(element => {return element.name !== id;});
+  const bl = this.state.commands.find(element => element.name === id);
+  
+  const index = this.state.commands.indexOf(bl);
+  this.state.commands.splice(index, 1);
+  const commands = this.state.commands;
 
   console.log(this.state.commands)
 
@@ -69,61 +148,61 @@ myMove = () => {
 }
 
 render() {
-    var blocks = {
-        wip: [],
-        complete: []
-    }
+    var blocks = []
 
     var commands = []
 
-    this.state.blocks.forEach ((t) => {
-        blocks[t.category].push(
-            <div key={t.name} 
-                onDragStart = {(e) => this.onDragStart(e, t.name)}
-                draggable
-                className="block"
-                //style = {{backgroundColor: t.bgcolor}}
-            >
-                {t.name}
-            </div>
+    var c = []
+
+    this.state.blocks.forEach ((b) => {
+        blocks.push(
+          <div style={{marginBottom: 15}}>
+            <Block name={b.name} category={b.category}/>
+          </div>
         );
     });
 
-    this.state.commands.forEach ((t) => {
+    this.state.commands.sort(function(a, b){return a.order-b.order}).forEach ((t, index) => {
       commands.push(
-          <div key={t.name} 
-              onDragStart = {(e) => this.onDragStart(e, t.name)}
-              draggable
-              className="block"
-              //style = {{backgroundColor: t.bgcolor}}
-          >
-              {t.name}
+        <div style={{
+          top: t.top, left: t.left, position: 'absolute'}}>
+           <div className="command">
+            {t.name}
           </div>
+        </div>
       );
   });
+
+  
+  this.state.commands.sort(function(a, b){return a.order-b.order}).forEach ((t, index) => {
+    c.push(
+      <p>{t.name}</p>
+    );
+});
 
 
   return (
     <div className="main-grid">
       <div className="sidebar">
         <h3>Actions</h3>
-        <div className="wip" 
-          onDragOver={(e)=>this.onDragOver(e)} 
-          //onDrop={(e)=>{this.onDrop(e, "wip")}}
-          >
-          {blocks.wip}
+        <div className="wip">
+          {blocks}
         </div>
       </div>
       <div className="coding-panel">
         <div className="description">
+        {c}
             <h3>Level 1: Visit the planet</h3>
             <p>Help the little panda to go to the supermarket planet, to start his work. </p>
             <p>Drag and drop the actions here:</p>
+              
+            
         </div>
         <div className="commands">
               <div className="droppable" 
                     onDragOver={(e)=>this.onDragOver(e)}
                     onDrop={(e)=>this.onDrop(e)}>
+                    <div id="start">When play</div>
                      {commands}
               </div>
         </div>

@@ -21,21 +21,7 @@
     height: 100%;
   }
 
-.block{
-    height: 40px;
-    width: 100px;
-    border-radius: 2px;
-    color: white;
-    font-weight: 500;
-    box-sizing: border-box;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    margin-right: 15px;
-    margin-bottom: 15px;
-    background-color: #AA57A2;
-    border: 3px solid #313873;
-    text-align: center;
-    padding-top: 5px;
-}
+
 
 .coding-panel{
     grid-column: 2;
@@ -50,6 +36,68 @@
     margin-top:20px;
     margin-left:20px;
 }
+
+.droppable {
+    position: relative;
+    margin-left:20px;
+    margin-top: 20px;
+    width: 200px;
+    height: 600px;
+  }
+
+  .block{
+    height: 40px;
+    width: 100px;
+    /* border-radius: 2px; */
+    color: white;
+    font-weight: 500;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+    margin-right: 15px;
+    /* margin-bottom: 15px; */
+    text-align: center;
+    padding-top: 5px;
+    border: 3px solid;
+}
+
+.commands{
+    position: absolute;
+}
+
+#start{
+    height: 40px;
+    width: 100px;
+    border-radius: 2px;
+    color: white;
+    font-weight: 500;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+    background-color: #00B695;
+    border: 3px solid #0f816c;
+    text-align: center;
+    padding-top: 5px;
+    position: absolute;
+    top: 150px;
+    left: 0px;
+}
+
+.command{
+    height: 40px;
+    width: 100px;
+    margin-bottom: 0px;
+    /* border-radius: 2px; */
+    color: white;
+    font-weight: 500;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+    background-color: #00B695;
+    border: 3px solid #0f816c;
+    position: absolute;
+    text-align: center;
+    padding-top: 5px;
+}
+
+
 
 .buttons-panel{
     grid-row: 3;
@@ -115,12 +163,7 @@
   }
   
   
-  .droppable {
-    position: relative;
-    margin-left:20px;
-    width: 150px;
-    height: 400px;
-  }
+
   
   .draggable {
     width: 100px;
