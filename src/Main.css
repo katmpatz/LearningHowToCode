@@ -66,7 +66,7 @@
 
 #start{
     height: 40px;
-    width: 100px;
+    width: auto;
     border-radius: 2px;
     color: white;
     font-weight: 500;
@@ -79,6 +79,17 @@
     position: absolute;
     top: 150px;
     left: 0px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+}
+
+#label{
+    grid-column: 1;
+}
+
+#select{
+    grid-column: 2;
 }
 
 .command{

@@ -28,12 +28,9 @@ function Block(props){
     }
 
     function onDragStart(ev, id) {
-        ev.dataTransfer.setData("id", id);
+            ev.dataTransfer.setData("id", id);
     }
-    
-    function onDragOver(ev) {
-        ev.preventDefault();
-    }
+
 
     return (
         <BlockView 
@@ -42,7 +39,6 @@ function Block(props){
         bgcolor = {bgcolor}
         brcolor = {brcolor}
         onDragStart = {(ev, id) => onDragStart(ev, id)}
-        onDragOver = {(ev) => onDragOver(ev)}
         />
     ); 
 
