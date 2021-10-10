@@ -54,7 +54,7 @@ drawCommands = () =>{
 
 
 moveOrderUp = (index) =>{
-  this.state.commands.slice(index-1)
+  this.state.commands.sort(function(a, b){return a.order-b.order}).slice(index-1)
   .forEach((cm, i) => {
     cm.order = cm.order - 1;
     console.log( cm.name + cm.id + ": " +  cm.order);
@@ -68,7 +68,7 @@ moveOrderUp = (index) =>{
 }
 
 moveOrderDown = (index) =>{
-  this.state.commands.slice(index-1)
+  this.state.commands.sort(function(a, b){return a.order-b.order}).slice(index-1)
   .forEach((cm, i) => {
     cm.order = cm.order + 1;
     console.log( cm.name + cm.id + ": " +  cm.order);
@@ -81,18 +81,41 @@ moveOrderDown = (index) =>{
   });
 }
 
-onDrop = (ev, action) => {
+onDrop = (ev) => {
    let id = 0, top = 0, left = 0;
-   let bname = ev.dataTransfer.getData("id");
-   //get the selected block
-   const bl = this.state.blocks.find(element => element.name === bname);
-   //set the name and the category of the command
-   let name = bl.name;
-   let category =  bl.category;
-
    console.log("dropY: " + ev.clientY);
    //position when the user drop the item
    const dropY = ev.clientY;
+   let bname = ev.dataTransfer.getData("id");
+   //get the selected block
+   let bl = this.state.blocks.find(element => element.name === bname);
+   if(bl === null || bl === undefined){
+    console.log("undefined");
+     let c1 = this.state.commands.find(element => element.id == bname);
+     console.log("c1 name: " + c1.name + c1.order);
+     //find the element which includes the drop position
+     for(var i=1; i< this.state.commands.length; i++){
+      if(dropY >= this.state.commands[i-1].top + 20  && dropY <= this.state.commands[i].top + 20 ){
+        //place the element in its position
+        this.state.commands[c1.order].order = i - 1;
+        console.log("Order: " + (i - 1));
+        //move up or down the rest elements 
+        if(c1.top >= this.state.commands[i-1].top) {
+          let j = i - 1;
+          this.state.commands.sort(function(a, b){return a.order-b.order}).slice(i-1)
+          .forEach((cm) => {cm.order = j++})
+        } else {
+          let k = 0;
+          this.state.commands.sort(function(a, b){return a.order-b.order}).slice(0,i-1)
+          .forEach((cm) => {cm.order = k++})
+        }
+      }
+    }
+   } else {
+
+   //set the name and the category of the command
+   let name = bl.name;
+   let category =  bl.category;
    
    var index = this.state.commands.length;
    console.log("Index1: " + index);
@@ -131,8 +154,9 @@ onDrop = (ev, action) => {
   //add command at the list
   this.state.commands.splice(index, 0, c);
    
-   console.log(this.state.commands);
-
+   
+  }
+  console.log(this.state.commands);
    //get the commands with the position based on their order
    var commands = this.drawCommands();
 

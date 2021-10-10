@@ -8,6 +8,7 @@ export default class CommandModel {
         this.order = order;
         this.top = top;
         this.left = left;
+        this.isCommand = true;
     }
 
 } 
