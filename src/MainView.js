@@ -14,12 +14,16 @@ export default class MainView extends Component {
   
   state = {
     blocks: [
-        new BlockModel("Move Down", "move"),
-        new BlockModel("Move Up", "move"),
-        new BlockModel("Move Right", "if"),
-        new BlockModel("Move Left", "loop"),
+        new BlockModel("Move Down", "move", []),
+        new BlockModel("Move Up", "move", []),
+        new BlockModel("Move Right", "move", []),
+        new BlockModel("Move Left", "move", []),
+        new BlockModel("If", "if", ['monkey', 'rabbit', 'turtle']),
+        new BlockModel("End If", "if", []),
+        new BlockModel("Repeat", "loop", ['1', '2', '3', '4', '5']),
+        new BlockModel("End Repeat", "loop", []),
       ],
-    commands: [new CommandModel(0, 0, "When play", 'move', 150, 0)],
+    commands: [new CommandModel(0, 0, "When play", 'start', 150, 0, [])],
     heightB: 40, //the height of a block/command 
     id:1,
     order:1,
@@ -116,6 +120,7 @@ onDrop = (ev) => {
    //set the name and the category of the command
    let name = bl.name;
    let category =  bl.category;
+   let select = bl.select;
    
    var index = this.state.commands.length;
    console.log("Index1: " + index);
@@ -149,7 +154,7 @@ onDrop = (ev) => {
   console.log("Top " + top);
 
   // create new command object 
-  const c = new  CommandModel(id, index, name, category, top, left);
+  const c = new  CommandModel(id, index, name, category, top, left, select);
   
   //add command at the list
   this.state.commands.splice(index, 0, c);
@@ -205,27 +210,48 @@ myMove = () => {
   }
 }
 
+insideCommand = (c) => {
+  //check if the command is inside an if or loop block  
+  let inside = false
+  for(var i=1; i< c.order; i++){
+    if( this.state.commands[i].name == 'If' || this.state.commands[i].name == 'Repeat'){
+      inside = true;
+    }
+    if( this.state.commands[i].name == 'End If' || this.state.commands[i].name == 'End Repeat'){
+      inside = false;
+    }
+  }
+  if(c.name == 'End If' || c.name == 'End Repeat'){
+    inside = false;
+  }
+  return inside;
+} 
+
 setBgColor = (category) => {
   //set colors based on the category
   if(category === 'move') {
-      return '#AA57A2';
+      return '#fe417c';
   } else if(category === 'if' || category === 'ifEnd') {
       return '#FBBB40';
   } else if(category === 'loop' || category === 'loopEnd') {
-     return'#40FBD9';
-  } 
+     return'#51ceff';
+  } else {
+    return '#00B695';
+  }
 }
 
 
 setBrColor = (category) => {
   //set colors based on the category
   if(category === 'move') {
-    return '#313873';
+    return '#aa0940';
   } else if(category === 'if' || category === 'ifEnd') {
-    return'#CF931E';
+    return '#CF931E';
   } else if(category === 'loop' || category === 'loopEnd') {
-    return'#00B695';
-  } 
+    return '#5a9cff';
+  }  else {
+    return '#0f816c';
+  }
 }
 
 render() {
@@ -238,7 +264,7 @@ render() {
     this.state.blocks.forEach ((b) => {
         blocks.push(
           <div style={{marginBottom: 15}}>
-            <Block name={b.name} category={b.category}/>
+            <Block name={b.name} category={b.category} select={b.select}/>
           </div>
         );
     });
@@ -246,14 +272,23 @@ render() {
     this.state.commands.forEach ((c) => {
       commands.push(
         <div key={c.id} style={{top: c.top, left: c.left, position: 'absolute'}} onDragOver={(e)=>this.onDragOverDelete(e)} onDragStart={(e)=>this.onDragStartDelete(e, c.id)}>
-             <div className="command" draggable
+             <div className={c.name == "If" || c.name == "Repeat" ? "command-select" : "command"} id={this.insideCommand(c) && "inside"} draggable
                 style = {{backgroundColor: this.setBgColor(c.category), borderColor: this.setBrColor(c.category)}}>
-                {c.name}
+                <span id="label">{c.name}</span>
+                {c.select.length > 0 &&
+                    <select id="select">
+                        {c.select.map((x,y) => 
+                          <option key={y} value={x}>{x}</option>
+                        )}
+                     </select>
+                }
             </div>
           </div>
         // <Command id={c.id} name={c.name} category={c.category} top={c.top} left={c.left} order={c.order}/>
       );
   });
+
+
 
   
 
@@ -277,15 +312,6 @@ render() {
         <div className="commands">
               <div className="droppable" 
                     onDrop={(e)=>this.onDrop(e)}>
-                    {/* <div id="start">
-                        <span id="label">When play</span>
-                        <select id="select">
-                          <option value="grapefruit">Grapefruit</option>
-                          <option value="lime">Lime</option>
-                          <option selected value="coconut">Coconut</option>
-                          <option value="mango">Mango</option>
-                        </select>
-                    </div> */}
                      {commands}
               </div>
         </div>

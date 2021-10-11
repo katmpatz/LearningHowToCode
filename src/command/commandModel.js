@@ -1,7 +1,7 @@
 
 
 export default class CommandModel {
-    constructor(id, order, name, category, top, left) {
+    constructor(id, order, name, category, top, left, select) {
         this.id = id;
         this.name = name ;
         this.category = category;
@@ -9,6 +9,7 @@ export default class CommandModel {
         this.top = top;
         this.left = left;
         this.isCommand = true;
+        this.select = select;
     }
 
 } 

@@ -47,42 +47,46 @@
 
   .block{
     height: 40px;
-    width: 100px;
+    width: 120px;
     /* border-radius: 2px; */
     color: white;
     font-weight: 500;
     box-sizing: border-box;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
-    margin-right: 15px;
+    margin-left: 10px;
     /* margin-bottom: 15px; */
     text-align: center;
     padding-top: 5px;
     border: 3px solid;
 }
 
-.commands{
-    position: absolute;
+#inside{
+    width: 100px !important;
+    margin-left: 20px;
 }
 
-#start{
+.block-select{
     height: 40px;
-    width: auto;
-    border-radius: 2px;
+    width: 120px;
+    /* border-radius: 2px; */
     color: white;
     font-weight: 500;
     box-sizing: border-box;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
-    background-color: #00B695;
-    border: 3px solid #0f816c;
+    margin-left: 10px;
+    /* margin-bottom: 15px; */
     text-align: center;
     padding-top: 5px;
-    position: absolute;
-    top: 150px;
-    left: 0px;
+    border: 3px solid;
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr;
 }
+
+.commands{
+    position: absolute;
+}
+
 
 #label{
     grid-column: 1;
@@ -90,13 +94,32 @@
 
 #select{
     grid-column: 2;
+    margin-bottom: 5px;
+    margin-right: 4px;
+}
+
+.command-select{
+    height: 40px;
+    width: 120px;
+    margin-bottom: 0px;
+    color: white;
+    font-weight: 500;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+    background-color: #00B695;
+    border: 3px solid #0f816c;
+    position: absolute;
+    text-align: center;
+    padding-top: 5px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
 }
 
 .command{
     height: 40px;
-    width: 100px;
+    width: 120px;
     margin-bottom: 0px;
-    /* border-radius: 2px; */
     color: white;
     font-weight: 500;
     box-sizing: border-box;

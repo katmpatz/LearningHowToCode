@@ -6,10 +6,18 @@ function BlockView(props){
         <div    
         onDragStart = {(e) => props.onDragStart(e, props.name)}
                 draggable
-                className="block"
+                className={props.name == "If" || props.name == "Repeat" ? "block-select" : "block"}
                 style = {{backgroundColor: props.bgcolor, borderColor: props.brcolor}}
             >
-                {props.name}
+                <span id="label">{props.name}</span>
+                {props.select.length > 0 &&
+                    <select id="select">
+                        {props.select.map((x,y) => 
+                          <option key={y} value={x}>{x}</option>
+                        )}
+                     </select>
+                }
+
         </div>
     );
 }

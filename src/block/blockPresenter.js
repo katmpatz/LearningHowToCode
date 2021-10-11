@@ -4,6 +4,7 @@ import BlockView from './blockView';
 function Block(props){
     const [name, setName]= React.useState(props.name);
     const [category, setCategory] = React.useState(props.category);
+    const [select, setSelect] = React.useState(props.select);
     const [bgcolor, setBgColor] = React.useState('');
     const [brcolor, setBrColor] = React.useState('');
     
@@ -15,15 +16,16 @@ function Block(props){
 
     function setColor() {
         //set colors based on the category
+        console.log("seklect " + select)
         if(category === 'move') {
-            setBgColor('#AA57A2');
-            setBrColor('#313873');
+            setBgColor('#fe417c');
+            setBrColor('#aa0940');
         } else if(category === 'if' || category === 'ifEnd') {
             setBgColor('#FBBB40');
             setBrColor('#CF931E');
         } else if(category === 'loop' || category === 'loopEnd') {
-            setBgColor('#40FBD9');
-            setBrColor('#00B695');
+            setBgColor('#51ceff');
+            setBrColor('#5a9cff');
         } 
     }
 
@@ -36,6 +38,7 @@ function Block(props){
         <BlockView 
         name = {name} 
         category = {category}
+        select = {select}
         bgcolor = {bgcolor}
         brcolor = {brcolor}
         onDragStart = {(ev, id) => onDragStart(ev, id)}
