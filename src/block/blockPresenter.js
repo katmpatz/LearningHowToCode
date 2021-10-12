@@ -16,7 +16,7 @@ function Block(props){
 
     function setColor() {
         //set colors based on the category
-        console.log("seklect " + select)
+        console.log("select " + select)
         if(category === 'move') {
             setBgColor('#f55688');
             setBrColor('#e02062');

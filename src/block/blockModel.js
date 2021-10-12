@@ -5,5 +5,4 @@ export default class BlockModel{
         this.select = select
         this.isCommand = false
     }
-
 }

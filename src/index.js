@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import MainPresenter from './MainPresenter';
 import './index.css';
-import MainView from './MainView';
+// import MainView from './MainView';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <MainView />
+    <MainPresenter />
   </React.StrictMode>,
   document.getElementById('root')
 );
