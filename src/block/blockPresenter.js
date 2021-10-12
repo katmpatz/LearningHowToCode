@@ -18,8 +18,8 @@ function Block(props){
         //set colors based on the category
         console.log("seklect " + select)
         if(category === 'move') {
-            setBgColor('#fe417c');
-            setBrColor('#aa0940');
+            setBgColor('#f55688');
+            setBrColor('#e02062');
         } else if(category === 'if' || category === 'ifEnd') {
             setBgColor('#FBBB40');
             setBrColor('#CF931E');

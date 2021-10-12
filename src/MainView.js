@@ -192,8 +192,6 @@ onDropDelete = (ev) => {
   });
 }
 
-
-
 myMove = () => {
   let id = null;
   const elem = document.getElementById("rocket");   
@@ -201,7 +199,7 @@ myMove = () => {
   clearInterval(id);
   id = setInterval(frame, 5);
   function frame() {
-    if (pos == 400) {
+    if (pos == 450) {
       clearInterval(id);
     } else {
       pos++; 
@@ -230,7 +228,7 @@ insideCommand = (c) => {
 setBgColor = (category) => {
   //set colors based on the category
   if(category === 'move') {
-      return '#fe417c';
+      return '#f55688';
   } else if(category === 'if' || category === 'ifEnd') {
       return '#FBBB40';
   } else if(category === 'loop' || category === 'loopEnd') {
@@ -244,7 +242,7 @@ setBgColor = (category) => {
 setBrColor = (category) => {
   //set colors based on the category
   if(category === 'move') {
-    return '#aa0940';
+    return '#e02062';
   } else if(category === 'if' || category === 'ifEnd') {
     return '#CF931E';
   } else if(category === 'loop' || category === 'loopEnd') {
@@ -259,7 +257,7 @@ render() {
 
     var commands = []
 
-    var c = []
+    var grid = []
 
     this.state.blocks.forEach ((b) => {
         blocks.push(
@@ -275,6 +273,7 @@ render() {
              <div className={c.name == "If" || c.name == "Repeat" ? "command-select" : "command"} id={this.insideCommand(c) && "inside"} draggable
                 style = {{backgroundColor: this.setBgColor(c.category), borderColor: this.setBrColor(c.category)}}>
                 <span id="label">{c.name}</span>
+                {/* <PlayIcon style={{width: '15%', height: 'auto'}}/> */}
                 {c.select.length > 0 &&
                     <select id="select">
                         {c.select.map((x,y) => 
@@ -287,6 +286,8 @@ render() {
         // <Command id={c.id} name={c.name} category={c.category} top={c.top} left={c.left} order={c.order}/>
       );
   });
+
+  // for()
 
 
 
@@ -317,7 +318,7 @@ render() {
         </div>
         <div className="buttons-panel">
           <div className="delete-panel" onDragOver={(e)=>this.onDragOver(e)} onDrop={(e)=>this.onDropDelete(e)}>
-            <DeleteIcon/>
+            <DeleteIcon id="delete"/>
           </div>
           <div className="action-panel">
             <button id="help-btn" className="round-btn"><HelpIcon/></button>
@@ -326,8 +327,16 @@ render() {
         </div>
       </div>
       <div className="output">
+        <div style={{gridRow: 1, gridColumn: '1/6', alignSelf: 'end', borderBottom: '1px #d3c8c8 dashed'}}></div>
+        <div style={{gridRow: 2, gridColumn: '1/6', alignSelf: 'end', borderBottom: '1px #d3c8c8 dashed'}}></div>
+        <div style={{gridRow: 3, gridColumn: '1/6', alignSelf: 'end', borderBottom: '1px #d3c8c8 dashed'}}></div>
+        <div style={{gridRow: 4, gridColumn: '1/6', alignSelf: 'end', borderBottom: '1px #d3c8c8 dashed'}}></div>
+        <div style={{gridRow: '1/6', gridColumn: 1, justifySelf: 'end', borderRight: '1px #d3c8c8 dashed'}}></div>
+        <div style={{gridRow: '1/6', gridColumn: 2, justifySelf: 'end', borderRight: '1px #d3c8c8 dashed'}}></div>
+        <div style={{gridRow: '1/6', gridColumn: 3, justifySelf: 'end', borderRight: '1px #d3c8c8 dashed'}}></div>
+        <div style={{gridRow: '1/6', gridColumn: 4, justifySelf: 'end', borderRight: '1px #d3c8c8 dashed'}}></div>
           <img src={planet} height="150" style={{position: 'absolute', top: 5, left: '74vw'}}/>
-          <img id="rocket" src={rocket} height="150" style={{position: 'absolute', bottom: 0, left: '79vw'}}/>
+          <img id="rocket" src={rocket} height="150" style={{position: 'absolute', bottom: 0, left: '78vw'}}/>
       </div>
     </div>
   );
