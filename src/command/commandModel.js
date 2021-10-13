@@ -7,8 +7,7 @@ export default class CommandModel {
         this.category = category;
         this.order = order;
         this.top = top;
-        this.left = left;
-        this.isCommand = true;
+        // this.isCommand = true;
         this.select = select;
     }
 

@@ -1,6 +1,7 @@
 import '../Main.css';
 import React, { Component } from 'react' ;
 import Block from '../block/blockPresenter';
+import Command from '../command/commandPresenter';
 import {ReactComponent as HelpIcon} from '../help.svg';
 import {ReactComponent as DeleteIcon} from '../delete.svg';
 import {ReactComponent as PlayIcon} from '../play_arrow.svg';
@@ -10,19 +11,24 @@ function CodingView(props) {
     let blocks = []
     let commands = []
 
-    props.blocks.forEach ((b) => {
-        blocks.push(
-          <div style={{marginBottom: 15}}>
-            <Block name={b.name} category={b.category} select={b.select}/>
-          </div>
-        );
-    });
+  props.blocks.forEach ((b) => {
+    blocks.push(
+      <div style={{marginBottom: 15}}>
+        <Block name={b.name} category={b.category} select={b.select}/>
+      </div>
+    );
+  });
 
-    props.commands.forEach ((c) => {
-      commands.push(
-        <div key={c.id} style={{top: c.top, left: c.left, position: 'absolute'}} onDragOver={(e)=>props.onDragOverDelete(e)} onDragStart={(e)=>props.onDragStartDelete(e, c.id)}>
-             <div className={c.name == "If" || c.name == "Repeat" ? "command-select" : "command"} id={props.insideCommand(c) && "inside"} draggable
-                style = {{backgroundColor: props.setBgColor(c.category), borderColor: props.setBrColor(c.category)}}>
+  props.commands.forEach ((c) => {
+    commands.push(
+      <div key={c.id} 
+      style={{top: c.top,  position: 'absolute'}} 
+      onDragOver={(e)=>props.onDragOverDelete(e)} 
+      onDragStart={(e)=>props.onDragStartDelete(e, c.id)}>
+        <div className={c.name == "If" || c.name == "Repeat" ? "command-select" : "command"} 
+             id={props.insideCommand(c.category) && "inside"} 
+             draggable
+             style = {{backgroundColor: props.setBgColor(c.category), borderColor: props.setBrColor(c.category)}}>
                 <span id="label">{c.name}</span>
                 {c.select.length > 0 &&
                     <select id="select">
@@ -33,8 +39,8 @@ function CodingView(props) {
                 }
             </div>
           </div>
-        // <Command id={c.id} name={c.name} category={c.category} top={c.top} left={c.left} order={c.order}/>
-      );
+      // <Command id={c.id} name={c.name} category={c.category} top={c.top} select={c.select} order={c.order}/>
+    );
   });
 
   return (

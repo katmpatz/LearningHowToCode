@@ -30,10 +30,12 @@ function CodingPresenter(){
     
     function onDragOverDelete(ev) {
       ev.preventDefault();
+      console.log("onDragOverDelete(ev)", ev)
     }
     
     function onDragStartDelete(ev, id) {
       ev.dataTransfer.setData("id", id);
+      console.log("onDragStartDelete", ev)
     }
     
     function drawCommands(){
