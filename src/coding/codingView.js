@@ -11,9 +11,9 @@ function CodingView(props) {
     let blocks = []
     let commands = []
 
-  props.blocks.forEach ((b) => {
+  props.blocks.forEach ((b, i) => {
     blocks.push(
-      <div style={{marginBottom: 15}}>
+      <div key={b.name + i} style={{marginBottom: 15}}>
         <Block name={b.name} category={b.category} select={b.select}/>
       </div>
     );
@@ -25,8 +25,8 @@ function CodingView(props) {
       style={{top: c.top,  position: 'absolute'}} 
       onDragOver={(e)=>props.onDragOverDelete(e)} 
       onDragStart={(e)=>props.onDragStartDelete(e, c.id)}>
-        <div className={c.name == "If" || c.name == "Repeat" ? "command-select" : "command"} 
-             id={props.insideCommand(c.category) && "inside"} 
+        <div className={c.name === "If" || c.name === "Repeat" ? "command-select" : "command"} 
+             id={props.insideCommand(c) ? "inside" : ""} 
              draggable
              style = {{backgroundColor: props.setBgColor(c.category), borderColor: props.setBrColor(c.category)}}>
                 <span id="label">{c.name}</span>

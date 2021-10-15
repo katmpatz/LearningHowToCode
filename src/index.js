@@ -1,13 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import MainPresenter from './MainPresenter';
+import MainModel from './mainModel';
+import useModelProperty from './customHook';
 import './index.css';
-// import MainView from './MainView';
+import './Main.css';
 import reportWebVitals from './reportWebVitals';
+
+const myModel = new MainModel();
+console.log(myModel);
 
 ReactDOM.render(
   <React.StrictMode>
-    <MainPresenter />
+    <MainPresenter model={myModel}/>
   </React.StrictMode>,
   document.getElementById('root')
 );

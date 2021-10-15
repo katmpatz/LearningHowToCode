@@ -3,6 +3,5 @@ export default class BlockModel{
         this.name = name 
         this.category = category
         this.select = select
-        this.isCommand = false
     }
 }

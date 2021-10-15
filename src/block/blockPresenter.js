@@ -2,9 +2,9 @@ import React from 'react';
 import BlockView from './blockView';
 
 function Block(props){
-    const [name, setName]= React.useState(props.name);
-    const [category, setCategory] = React.useState(props.category);
-    const [select, setSelect] = React.useState(props.select);
+    const name = props.name;
+    const category = props.category;
+    const select = props.select;
     const [bgcolor, setBgColor] = React.useState('');
     const [brcolor, setBrColor] = React.useState('');
     
@@ -16,7 +16,6 @@ function Block(props){
 
     function setColor() {
         //set colors based on the category
-        console.log("select " + select)
         if(category === 'move') {
             setBgColor('#f55688');
             setBrColor('#e02062');

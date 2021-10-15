@@ -227,6 +227,21 @@
     grid-template-rows: repeat(5, [col-start] 20% [col-end]); 
 }
 
+.row-line{
+    align-self: 'end';
+    border-bottom: '1px #d3c8c8 dashed';
+}
+
+.column-line{
+    justify-self: 'end';
+    border-right: '1px #d3c8c8 dashed';
+}
+
+.grid-center{
+    align-self: 'center';
+    justify-self: 'center';
+}
+
 /* css example */
 .App {
     text-align: center;
