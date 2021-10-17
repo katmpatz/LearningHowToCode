@@ -25,9 +25,11 @@ export default class MainModel{
         this.levelBlocks = [];
         this.levelCommands = [];
         this.checkPoints = [];
+        this.stepsStars = [];
         this.startingPoint = [];
         this.rocketPosition = {};
         this.charactersList = [];
+        this.animCharacter = [];
         this.windowVariables = {width: width, height: height, sqw: sqw, sqh:sqh}
         this.observers = [];
         this.setCurentLevel(curentLevel);
@@ -35,17 +37,14 @@ export default class MainModel{
 
     setLevels(){
         //set all the levels
+        //Level 1; the spaceship panda has to move to the planet, it needs only move blocks
         let l1 = new Level(
             1, //id
             'istructions', //istructions
             [   new BlockModel("Move Down", "move", []), //blocks
                 new BlockModel("Move Up", "move", []),
                 new BlockModel("Move Right", "move", []),
-                new BlockModel("Move Left", "move", []),
-                new BlockModel("If", "if", ['monkey', 'rabbit', 'turtle']),
-                new BlockModel("End If", "if", []),
-                new BlockModel("Repeat", "loop", ['1', '2', '3', '4']),
-                new BlockModel("End Repeat", "loop", []),
+                new BlockModel("Move Left", "move", [])//,
               ], 
               { //rocketPosition
                 row: 5, 
@@ -55,11 +54,94 @@ export default class MainModel{
                 left: this.rocketStartPositionLeft(3), 
                 right: this.rocketStartPositionRight(3)
               },
-              [[3,1]],//checkPoints, 
-              ['supermarket', 1, 3, 'Supermarket_Planet.png', 'horizontal'],//characterList
-            ) 
+              [[1,3,null]],//checkPoints,
+              [3,4,5], // 3 Stars = 3,  2 Stars = 4, 1 Star = anything else
+              ['supermarket', 1, 3, 'Supermarket_Planet.png', 'horizontal']//characterList
+              ) 
         this.levels = [...this.levels, l1]; //add l1 in levels
-        console.log(this.levels);
+
+        //Level 2; the spaceship panda has to move to the planet, we integratea foor loop to introduce a quicker way to code.
+        let l2 = new Level(
+            2,
+            'instruction to level2',
+            [   new BlockModel("Move Down", "move", []), //blocks
+                new BlockModel("Move Up", "move", []),
+                new BlockModel("Move Right", "move", []),
+                new BlockModel("Move Left", "move", []),
+                new BlockModel("Repeat", "loop", ['1', '2', '3', '4']),
+                new BlockModel("End Repeat", "loop", [])
+              ], 
+              { //rocketPosition
+                row: 5, 
+                column: 3, 
+                top: this.setTop(5), 
+                bottom: this.setBottom(5), 
+                left: this.rocketStartPositionLeft(3), 
+                right: this.rocketStartPositionRight(3)
+              },
+              [[3,1,null]],//checkPoints, 
+              [3,4,5], // 3 Stars = 3,  2 Stars = 4, 1 Star = anything else
+              ['bananaPlanet', 1, 1 , 'Supermarket_Planet.png', 'horizontal']//characterList
+            ) 
+        this.levels = [...this.levels, l2]; //add l2 in levels
+        
+        //Level 3; the spaceship panda has to get bananas from the banana planet and then move to the position of the monkey, they use move and loop blocks
+        let l3 = new Level(
+            2,
+            'instruction to level2',
+            [   new BlockModel("Move Down", "move", []), //blocks
+                new BlockModel("Move Up", "move", []),
+                new BlockModel("Move Right", "move", []),
+                new BlockModel("Move Left", "move", []),
+                new BlockModel("Repeat", "loop", ['1', '2', '3', '4']),
+                new BlockModel("End Repeat", "loop", [])
+              ], 
+              { //rocketPosition
+                row: 5, 
+                column: 3, 
+                top: this.setTop(5), 
+                bottom: this.setBottom(5), 
+                left: this.rocketStartPositionLeft(3), 
+                right: this.rocketStartPositionRight(3)
+              },
+              [[3,1,"banana"],[4,1,null]],//checkPoints, 
+              [3,4,5], // 3 Stars = 3,  2 Stars = 4, 1 Star = anything else
+              ['bananaPlanet', 1, 3, 'Supermarket_Planet.png', 'horizontal']//characterList
+            ) 
+        this.levels = [...this.levels, l3]; //add l3 in levels
+
+        //Level 4; The panda waits for the animals to come by and using If, the panda will give them the right frut to each animal
+        //Turtle = Strawberry, Monkey = Banana, Rabbit = Carrot
+        let l4 = new Level(
+            2,
+            'instruction to level3',
+            [   new BlockModel("Move Down", "move", []), //blocks
+                new BlockModel("Move Up", "move", []),
+                new BlockModel("Move Right", "move", []),
+                new BlockModel("Move Left", "move", []),
+                new BlockModel("If", "if", ['monkey', 'rabbit', 'turtle']),
+                new BlockModel("End If", "if", []),
+                new BlockModel("Give Strawberry", "move"),
+                new BlockModel("Give Carrot", "move"),
+                new BlockModel("Give Banana", "move")
+              ], 
+              { //rocketPosition
+                row: 3, 
+                column: 3, 
+                top: this.setTop(5), 
+                bottom: this.setBottom(5), 
+                left: this.rocketStartPositionLeft(3), 
+                right: this.rocketStartPositionRight(3)
+              },
+              [9,10,11], // 3 Stars = 3,  2 Stars = 4, 1 Star = anything else
+              [[3,3,"banana"],[3,3,"carrot"],[3,3,"strawberry"]],//checkPoints, 
+              ['supermarket', 2, 3, 'Supermarket_Planet.png', 'horizontal'],//characterList
+              [["monkey",6,3,3,3],["monkey",3,3,0,3],["rabbit",6,3,3,3],["rabbit",3,3,0,3],["turtle",6,3,3,3],["turtle",3,3,0,3]]
+            ) 
+        this.levels = [...this.levels, l4]; //add l4 in levels
+
+        
+        //console.log(this.levels);
     }
 
     setCurentLevel(l){
@@ -69,7 +151,7 @@ export default class MainModel{
         this.notifyObservers();
         if (this.curentLevel) {
             const lb = level.getBlocks();
-            console.log("lb: " + lb)
+           // console.log("lb: " + lb)
             this.levelBlocks = [...lb];
             let emptyArray = [];
             this.levelCommands = [new CommandModel(0, 0, "When play", 'start',  150, emptyArray)]; //commands list is empty when the level is initialized
@@ -103,7 +185,7 @@ export default class MainModel{
         //we have to leave equal distance from right and left of the rocket
         let distToCenter = (sqw - rw)/2
         right = right + distToCenter;
-        console.log("right: " + right);
+        //console.log("right: " + right);
         return right;
     }
 
@@ -145,7 +227,5 @@ export default class MainModel{
                     console.log(error);
                 }})
         }
-        
     }
-
 }
