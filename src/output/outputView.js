@@ -32,7 +32,7 @@ function OutputView(props) {
           {grid}
           {planets}
           <img id="rocket" src={rocket} height={props.sqh}
-          style={{position: 'absolute',  bottom:0, right:props.rocketRight}}/>
+          style={{position: 'absolute',  bottom:props.rocketBottom, right:props.rocketRight}}/>
       </div>
   );
 }

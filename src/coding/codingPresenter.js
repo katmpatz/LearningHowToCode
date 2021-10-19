@@ -256,15 +256,15 @@ function CodingPresenter(props) {
             gameEvalution(); //End game
             break;
           }
-          console.log("NOW THERE ARE:"+endlist.length + " and i is: "+ i);
+          console.log("NOW THERE ARE:" + endlist.length + " and i is: " + i);
 
           endlist.forEach((m, l) => { //Get the next "End Repeat after the Start Repeat"
-            if (m > i) { 
-              endPos = m ;
+            if (m > i) {
+              endPos = m;
             }
           });
 
-          console.log( "m = "+ endPos );
+          console.log("m = " + endPos);
           // Check if the position of "End Repeat" is invalid
           if (endPos == -1) {
             gameEvalution();//End game
@@ -274,7 +274,7 @@ function CodingPresenter(props) {
           //Do the Foor Loop
           for (let j = 0; j < (repeatTimes - 1); j++) {
             for (let k = i; k < endPos; k++) {
-              console.log("DOING: " + commands[i + 1].name + " for "+ k);
+              console.log("DOING: " + commands[i + 1].name + " for " + k);
               commandMove(commands[k].name);
             }
           }
@@ -312,19 +312,19 @@ function CodingPresenter(props) {
     switch (direction) {
       case "Move Up":
         pandaCPos = [pandaCPos[0], pandaCPos[1] - 1];
-        actionSequence.push(pandaCPos[0], pandaCPos[1]);//["MoveUp", parseInt(pos[0]), parseInt(pos[1]) + 1]);
+        actionSequence.push("bottom");//, pandaCPos);//["MoveUp", parseInt(pos[0]), parseInt(pos[1]) + 1]);
         break;
       case "Move Down":
         pandaCPos = [pandaCPos[0], pandaCPos[1] + 1];
-        actionSequence.push(pandaCPos[0], pandaCPos[1]);//(["MoveDown", parseInt(pos[0]), parseInt(pos[1]) - 1]);
+        actionSequence.push("top");//, pandaCPos);//(["MoveDown", parseInt(pos[0]), parseInt(pos[1]) - 1]);
         break;
       case "Move Right":
         pandaCPos = [pandaCPos[0] + 1, pandaCPos[1]];
-        actionSequence.push(pandaCPos[0], pandaCPos[1]);//["MoveRight", parseInt(pos[0]) + 1, parseInt(pos[1])]);
+        actionSequence.push("left");//, pandaCPos);//["MoveRight", parseInt(pos[0]) + 1, parseInt(pos[1])]);
         break;
       case "Move Left":
         pandaCPos = [pandaCPos[0] - 1, pandaCPos[1]];
-        actionSequence.push(pandaCPos[0], pandaCPos[1]);//["MoveLeft", parseInt(pos[0]) - 1, parseInt(pos[1])]);
+        actionSequence.push("right");//, pandaCPos);//["MoveLeft", parseInt(pos[0]) - 1, parseInt(pos[1])]);
         break;
     }
     console.log("to " + pandaCPos);
@@ -341,83 +341,154 @@ function CodingPresenter(props) {
     }
   }
 
-  /* function moveUp(rows) {
-     //Moves character X blocks Up
-     //Each block is calculated from the size of the screan
-     let id = null;
-     const elem = document.getElementById("rocket");
-     let bottom = parseInt(rocketPosition.bottom);
-     let afterBottom = parseInt(bottom + windowVariables.sqh * rows)
-     clearInterval(id);
-     id = setInterval(frame, 5);
-     function frame() {
-       if (bottom === afterBottom) {
-         clearInterval(id);
-       } else {
-         bottom++;
-         elem.style.bottom = bottom + "px";
-       }
-     }
+  function playAnimation() {
+
+    let id = null;
+    const elem = document.getElementById("rocket");
+    let direction = null;
+    let after, itemListAction = 0, d = 0;
+    clearInterval(id);
+    id = setInterval(frame, 5);
+    function frame() {
+      if (direction == null && d < actionSequence.length) {
+        itemListAction = actionSequence[d];
+        switch (itemListAction) {
+          case "bottom":
+            direction = parseInt(rocketPosition.bottom);
+            after = parseInt(direction + windowVariables.sqh);
+            break;
+          case "top":
+            direction = parseInt(rocketPosition.bottom);
+            after = parseInt(direction - windowVariables.sqh);
+            //direction = parseInt(rocketPosition.top);
+            // after = parseInt(direction + windowVariables.sqh);
+            break;
+          case "right":
+            direction = parseInt(rocketPosition.right);
+            after = parseInt(direction + windowVariables.sqw );
+            break;
+          case "left":
+            direction = parseInt(rocketPosition.right);
+            after = parseInt(direction - windowVariables.sqw);
+            break;
+          default:
+
+        }
+      } else if (direction === after) {
+
+        d++;
+        direction = null;
+      } else if (direction === after && d == actionSequence.length) {
+        clearInterval(id);
+      } else {
+        itemListAction = actionSequence[d];
+        switch (itemListAction) {
+          case "bottom":
+            direction++;
+            rocketPosition.bottom = direction;
+            elem.style.bottom = direction + "px";
+            break;
+          case "top":
+            direction--;
+            rocketPosition.bottom = direction;
+            elem.style.bottom = direction + "px";
+            // rocketPosition.top = direction;
+            // elem.style.top = direction + "px";
+            break;
+          case "right":
+            direction++;
+            rocketPosition.right = direction;
+            elem.style.right = direction + "px";
+            break;
+          case "left":
+            direction--;
+            rocketPosition.right = direction;
+            elem.style.right = direction + "px";
+            break;
+          default:
+        }
+      }
+    }
+  }
+  function moveUp(rows) {
+    //Moves character X blocks Up
+    //Each block is calculated from the size of the screan
+    let id = null;
+    const elem = document.getElementById("rocket");
+    let bottom = parseInt(rocketPosition.bottom);
+    let afterBottom = parseInt(bottom + windowVariables.sqh * rows)
+    clearInterval(id);
+    id = setInterval(frame, 5);
+    function frame() {
+      if (bottom === afterBottom) {
+        clearInterval(id);
+      } else {
+        bottom++;
+        elem.style.bottom = bottom + "px";
+      }
+    }
+
+  }
+  /*
+     
+  function moveRight(columns) {
+    let id = null;
+    const elem = document.getElementById("rocket");
+    let pos = parseInt(rocketPosition.left);
+    //the position after the movement is equal to the current position plus the width of the columns that will move
+    let afterPos = parseInt(pos + windowVariables.sqw * columns);
+    clearInterval(id);
+    id = setInterval(frame, 5);
+    function frame() {
+      if (pos === afterPos) {
+        clearInterval(id);
+      } else {
+        pos++;
+        elem.style.left = pos + "px";
+      }
+    }
+  }
+  function moveDown(rows) {
+    //Moves character X positions down
+    //Each block is calculated from the size of the screan
+    let id = null;
+    const elem = document.getElementById("rocket");
+    let top = parseInt(rocketPosition.top);
+    let afterTop = parseInt(top + windowVariables.sqh * rows)
+    clearInterval(id);
+    id = setInterval(frame, 5);
+    function frame() {
+      if (top === afterTop) {
+        clearInterval(id);
+      } else {
+        top++;
+        elem.style.top = top + "px";
+      }
+    }
+  }
    
-   }
+
    
-   function moveDown(rows) {
-     //Moves character X positions down
-     //Each block is calculated from the size of the screan
-     let id = null;
-     const elem = document.getElementById("rocket");
-     let top = parseInt(rocketPosition.top);
-     let afterTop = parseInt(top + windowVariables.sqh * rows)
-     clearInterval(id);
-     id = setInterval(frame, 5);
-     function frame() {
-       if (top === afterTop) {
-         clearInterval(id);
-       } else {
-         top++;
-         elem.style.top = top + "px";
-       }
-     }
-   }
-   
-   
-   function moveRight(columns) {
-     let id = null;
-     const elem = document.getElementById("rocket");
-     let pos = parseInt(rocketPosition.left);
-     //the position after the movement is equal to the current position plus the width of the columns that will move
-     let afterPos = parseInt(pos + windowVariables.sqw * columns);
-     clearInterval(id);
-     id = setInterval(frame, 5);
-     function frame() {
-       if (pos === afterPos) {
-         clearInterval(id);
-       } else {
-         pos++;
-         elem.style.left = pos + "px";
-       }
-     }
-   }
-   
-   function moveLeft(columns) {
-     let id = null;
-     const elem = document.getElementById("rocket");
-     let pos = parseInt(rocketPosition.right);
-     //the position after the movement is equal to the current position plus the width of the columns that will move
-     let afterPos = parseInt(pos + windowVariables.sqw * columns);
-     clearInterval(id);
-     id = setInterval(frame, 5);
-     function frame() {
-       if (pos === afterPos) {
-         clearInterval(id);
-       } else {
-         pos++;
-         elem.style.right = pos + "px";
-       }
-     }
-   }*/
+  function moveLeft(columns) {
+    let id = null;
+    const elem = document.getElementById("rocket");
+    let pos = parseInt(rocketPosition.right);
+    //the position after the movement is equal to the current position plus the width of the columns that will move
+    let afterPos = parseInt(pos + windowVariables.sqw * columns);
+    clearInterval(id);
+    id = setInterval(frame, 5);
+    function frame() {
+      if (pos === afterPos) {
+        clearInterval(id);
+      } else {
+        pos++;
+        elem.style.right = pos + "px";
+      }
+    }
+  }*/
 
   function gameEvalution() {
+    playAnimation();
     console.log(checkPoints);
     //Evaluate if the amount of Valid checkpoints matches the level checkpoint
     if (validCheckPoints.length == checkPoints.length) {

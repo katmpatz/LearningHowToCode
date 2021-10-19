@@ -10,7 +10,8 @@ function OutputPresenter(props){
     return (
         <OutputView 
             characterList={charactersList} 
-            rocketRight={rocketPosition.right} 
+            rocketRight={rocketPosition.right}
+            rocketBottom={rocketPosition.bottom}
             sqh={windowVariables.sqh} 
             sqw={windowVariables.sqw}  
             setRight={(row) => props.model.setRight(row)}
