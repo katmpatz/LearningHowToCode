@@ -2,8 +2,11 @@ import '../Main.css';
 import React from 'react' ;
 import rocket from '../img/Rocket_Panda.png';
 import supermarket from '../img/Supermarket_Planet.png';
+import bananaPlanet from '../img/Banana_Planet.png';
+import monkey from '../img/Monkey.png';
 
 function OutputView(props) {
+
 
   let grid = []
   let planets = []
@@ -13,12 +16,16 @@ function OutputView(props) {
     grid.push(<div key={'c'+ i} className="column-line" style={{gridRow: '1/6', gridColumn: i, justifySelf: 'end', borderRight: '1px #d3c8c8 dashed'}}></div>)
   }
 
-  for(let i = 0; i<=props.characterList.length; i++){
+  props.characterList.forEach ((c, i) => {
+    console.log("props.characterList[i]" + c.name)
     planets.push(
-      <img key={i} src={supermarket} width={props.sqw} 
-      style={{position: 'absolute', bottom: props.setBottom(props.characterList[1]), right: props.setRight(props.characterList[2])}}/>
-    )
-  }
+      <img key={i} 
+          src={c.name == "supermarket" ? supermarket : (c.name == "bananaPlanet" ? bananaPlanet  : monkey)} 
+          width={c.name == "monkey" ? props.sqw /2 : props.sqw} 
+      style={{position: 'absolute', bottom: props.setBottom(c.row), right: props.setRight(c.column)}}/>
+    );
+  });
+
 
   return (
       <div className="output">

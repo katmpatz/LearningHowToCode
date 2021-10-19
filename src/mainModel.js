@@ -35,7 +35,7 @@ export default class MainModel{
         this.animCharacter = [];
         this.windowVariables = {width: width, height: height, sqw: sqw, sqh:sqh}
         this.observers = [];
-        this.setCurentLevel(2);//curentLevel);
+        this.setCurentLevel(3);//curentLevel);
     }
 
     setLevels(){
@@ -59,7 +59,11 @@ export default class MainModel{
               },
               [[3,1,null]],//checkPoints,
               [4,5], // 3 Stars = 4,  2 Stars = 5, 1 Star = anything else
-              ['supermarket', 1, 3, 'Supermarket_Planet.png', 'horizontal']//characterList
+              [{//characterList
+                name: 'supermarket', 
+                row: 1, 
+                column: 3 
+                }]
               ) 
         this.levels = [...this.levels, l1]; //add l1 in levels
 
@@ -84,7 +88,11 @@ export default class MainModel{
               },
               [[1,3,null]],//checkPoints, 
               [4,5], // 3 Stars = 4,  2 Stars = 5, 1 Star = anything else
-              ['bananaPlanet', 1, 1 , 'Supermarket_Planet.png', 'horizontal']//characterList
+              [{//characterList
+                name: 'bananaPlanet', 
+                row: 1, 
+                column: 3 
+                }]
             ) 
         this.levels = [...this.levels, l2]; //add l2 in levels
         
@@ -109,7 +117,17 @@ export default class MainModel{
               },
               [[1,3,"banana"],[4,1,null]],//checkPoints, 
               [4,5], // 3 Stars = 4,  2 Stars = 5, 1 Star = anything else
-              ['bananaPlanet', 1, 3, 'Supermarket_Planet.png', 'horizontal']//characterList
+              [{//characterList
+                name: 'bananaPlanet', 
+                row: 2, 
+                column: 1 
+                },
+                {
+                name: 'monkey', 
+                row: 1, 
+                column: 3 
+                },
+              ]
             ) 
         this.levels = [...this.levels, l3]; //add l3 in levels
 
@@ -195,11 +213,12 @@ export default class MainModel{
         return right;
     }
 
-    getStars(){ return stars;}
+    getStars(){ return this.stepsStars;}
 
     setStars(amount){ 
-        stars = amount;
-        //Katerina set the observers here.
+        console.log("Stars : "+ amount);
+        this.stepsStars = amount;
+        this.notifyObservers();
     }
 
     rocketStartPositionLeft(row){

@@ -2,7 +2,9 @@ import React from 'react';
 import CodingView from './codingView';
 import CommandModel from '../command/commandModel';
 import useModelProperty from '../customHook';
-import { wait } from '@testing-library/dom';
+import { LocalPrintshopSharp } from '@material-ui/icons';
+import { DinnerDining } from '@mui/icons-material';
+
 
 function CodingPresenter(props) {
 
@@ -12,6 +14,9 @@ function CodingPresenter(props) {
   const commands = useModelProperty(props.model, "levelCommands");
   const checkPoints = useModelProperty(props.model, "checkPoints");
   const stepsStars = useModelProperty(props.model, "stepsStars");
+  const level = useModelProperty(props.model, "curentLevel");
+
+  let repeat = 1; //value from select in for 
 
   let validCheckPoints = [];
   let itemsInsideFoor = [];
@@ -240,7 +245,9 @@ function CodingPresenter(props) {
         case "Repeat":
           let endlist = [];
           let endPos = -1;
-          const repeatTimes = 3; // Katerina here the value from the combos box
+          const repeatTimes = repeat; // Katerina here the value from the combos box
+          console.log("repeatTimes:" + repeatTimes);
+          console.log("repeat:" + repeat);
 
           //Get all items from the list of commands that have the End Repeat block
           endlist = [commands.findIndex(o => o.name == "End Repeat")];//itemsInsideFoor.push(cm);
@@ -299,7 +306,6 @@ function CodingPresenter(props) {
 
     var win = gameEvalution();
     console.log("Wining is  " + win);
-
 
   }
   function commandMove(direction) {
@@ -433,10 +439,25 @@ function CodingPresenter(props) {
       console.log("you didn't found all of the checkpoints, sorry, try again");
       props.model.setStars(0);
     }
+    console.log(stepsStars);
+  }
+
+  function nextLevel(){
+    props.model.setCurentLevel(level+1);
+  }
+
+  function selectChange(e, category){
+    let {name, value} = e.target;
+    console.log("name: " + name + "value: " + value);
+    if(category = "loop"){
+      repeat = parseInt(value);
+    }
+    //if value == null means that the user didn't change the defauklt vaklue which is 1
   }
 
   return (
     <CodingView
+      model = {props.model} 
       blocks={blocks}
       commands={commands}
       onDragOverDelete={(e) => onDragOverDelete(e)} //command
@@ -449,6 +470,10 @@ function CodingPresenter(props) {
       onDragStart={(ev, id) => onDragStart(ev, id)}
       onDragStartDelete={(ev, id) => onDragStartDelete(ev, id)}
       myMove={() => runCode()}
+      stepsStars={stepsStars}
+      level={level}
+      selectChange = {(e) => selectChange(e)}
+      //openModal={() => handleClickOpen}
     />
   );
 
