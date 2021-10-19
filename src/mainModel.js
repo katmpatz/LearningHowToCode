@@ -11,6 +11,9 @@ const width = window.innerWidth
 const height = window.innerHeight
 || document.documentElement.clientHeight
 || document.body.clientHeight;
+//Stars acquire from the level
+
+ let stars=0;
 
 //The output area covers the 42% of the window's width and is devided in 25 squares(5*5), 
 //so the width and the height of each square are:
@@ -32,7 +35,7 @@ export default class MainModel{
         this.animCharacter = [];
         this.windowVariables = {width: width, height: height, sqw: sqw, sqh:sqh}
         this.observers = [];
-        this.setCurentLevel(curentLevel);
+        this.setCurentLevel(1);//curentLevel);
     }
 
     setLevels(){
@@ -54,8 +57,8 @@ export default class MainModel{
                 left: this.rocketStartPositionLeft(3), 
                 right: this.rocketStartPositionRight(3)
               },
-              [[1,3,null]],//checkPoints,
-              [3,4,5], // 3 Stars = 3,  2 Stars = 4, 1 Star = anything else
+              [[3,1,null]],//checkPoints,
+              [4,5], // 3 Stars = 4,  2 Stars = 5, 1 Star = anything else
               ['supermarket', 1, 3, 'Supermarket_Planet.png', 'horizontal']//characterList
               ) 
         this.levels = [...this.levels, l1]; //add l1 in levels
@@ -79,16 +82,16 @@ export default class MainModel{
                 left: this.rocketStartPositionLeft(3), 
                 right: this.rocketStartPositionRight(3)
               },
-              [[3,1,null]],//checkPoints, 
-              [3,4,5], // 3 Stars = 3,  2 Stars = 4, 1 Star = anything else
+              [[1,3,null]],//checkPoints, 
+              [4,5], // 3 Stars = 4,  2 Stars = 5, 1 Star = anything else
               ['bananaPlanet', 1, 1 , 'Supermarket_Planet.png', 'horizontal']//characterList
             ) 
         this.levels = [...this.levels, l2]; //add l2 in levels
         
         //Level 3; the spaceship panda has to get bananas from the banana planet and then move to the position of the monkey, they use move and loop blocks
         let l3 = new Level(
-            2,
-            'instruction to level2',
+            3,
+            'instruction to level3',
             [   new BlockModel("Move Down", "move", []), //blocks
                 new BlockModel("Move Up", "move", []),
                 new BlockModel("Move Right", "move", []),
@@ -104,8 +107,8 @@ export default class MainModel{
                 left: this.rocketStartPositionLeft(3), 
                 right: this.rocketStartPositionRight(3)
               },
-              [[3,1,"banana"],[4,1,null]],//checkPoints, 
-              [3,4,5], // 3 Stars = 3,  2 Stars = 4, 1 Star = anything else
+              [[1,3,"banana"],[4,1,null]],//checkPoints, 
+              [4,5], // 3 Stars = 4,  2 Stars = 5, 1 Star = anything else
               ['bananaPlanet', 1, 3, 'Supermarket_Planet.png', 'horizontal']//characterList
             ) 
         this.levels = [...this.levels, l3]; //add l3 in levels
@@ -113,8 +116,8 @@ export default class MainModel{
         //Level 4; The panda waits for the animals to come by and using If, the panda will give them the right frut to each animal
         //Turtle = Strawberry, Monkey = Banana, Rabbit = Carrot
         let l4 = new Level(
-            2,
-            'instruction to level3',
+            4,
+            'instruction to level4',
             [   new BlockModel("Move Down", "move", []), //blocks
                 new BlockModel("Move Up", "move", []),
                 new BlockModel("Move Right", "move", []),
@@ -133,7 +136,8 @@ export default class MainModel{
                 left: this.rocketStartPositionLeft(3), 
                 right: this.rocketStartPositionRight(3)
               },
-              [9,10,11], // 3 Stars = 3,  2 Stars = 4, 1 Star = anything else
+              [],
+              [10,11], // 3 Stars = 10,  2 Stars = 11, 1 Star = anything else
               [[3,3,"banana"],[3,3,"carrot"],[3,3,"strawberry"]],//checkPoints, 
               ['supermarket', 2, 3, 'Supermarket_Planet.png', 'horizontal'],//characterList
               [["monkey",6,3,3,3],["monkey",3,3,0,3],["rabbit",6,3,3,3],["rabbit",3,3,0,3],["turtle",6,3,3,3],["turtle",3,3,0,3]]
@@ -157,6 +161,8 @@ export default class MainModel{
             this.levelCommands = [new CommandModel(0, 0, "When play", 'start',  150, emptyArray)]; //commands list is empty when the level is initialized
             const cp = level.getCheckPoints();
             this.checkPoints = [...cp];
+            const ss = level.getStepsStars();
+            this.stepsStars = [...ss];
             const rp = level.getRocketPosition();
             this.rocketPosition = rp;
             const cl = level.getCharacterList();
@@ -189,24 +195,37 @@ export default class MainModel{
         return right;
     }
 
+    getStars(){ return stars;}
+
+    setStars(amount){ 
+        console.log("Stars : "+ amount);
+        stars = amount;
+        //Katerina set the observers here.
+    }
+
     rocketStartPositionLeft(row){
         return width - this.rocketStartPositionRight(row);
+        this.notifyObservers();
     }
 
     setRight(row){
         return (numOfRows - row)* sqw;
+        this.notifyObservers();
     }
 
     setLeft(row){
         return width - this.setRight(row);
+        this.notifyObservers();
     }
 
     setBottom(column){
         return (numOfColumns - column)* sqh;
+        this.notifyObservers();
     }
 
     setTop(column){
         return height - this.setBottom(column);
+        this.notifyObservers();
     }
 
 
