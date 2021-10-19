@@ -15,7 +15,6 @@ function CodingPresenter(props) {
 
   let validCheckPoints = [];
   let itemsInsideFoor = [];
-  let activateFoorLoop = false;
 
   let pandaCPos = [];
   let actionSequence = [];
@@ -228,26 +227,53 @@ function CodingPresenter(props) {
     var limits = [5, 5];
     commands.forEach((cm, i) => {
       console.log("Action: " + cm.name);
-      if(activateFoorLoop == true){
-
-      } else {
       switch (cm.name) {
         case "When play":
           //Reset values
-          pandaCPos = [3,5]; // update to panda position in model
+          pandaCPos = [3, 5]; // update to panda position in model
           actionSequence = [];
-          activateFoorLoop = false;
           break;
         case "If":
           break;
         case "End If":
           break;
         case "Repeat":
-          //itemsInsideFoor.push(cm);
-          
+          let endlist = [];
+          let endPos = -1;
+          const repeatTimes = 3; // Katerina here the value from the combos box
+
+          //Get all items from the list of commands that have the End Repeat block
+          endlist = [commands.findIndex(o => o.name == "End Repeat")];//itemsInsideFoor.push(cm);
+
+          if (endlist.length <= 0) { // if there is no "End Repeat"
+            gameEvalution(); //End game
+            break;
+          }
+          console.log("NOW THERE ARE:"+endlist.length + " and i is: "+ i);
+
+          endlist.forEach((m, l) => { //Get the next "End Repeat after the Start Repeat"
+            if (m > i) { 
+              endPos = m ;
+            }
+          });
+
+          console.log( "m = "+ endPos );
+          // Check if the position of "End Repeat" is invalid
+          if (endPos == -1) {
+            gameEvalution();//End game
+            break;
+          }
+
+          //Do the Foor Loop
+          for (let j = 0; j < (repeatTimes - 1); j++) {
+            for (let k = i; k < endPos; k++) {
+              console.log("DOING: " + commands[i + 1].name + " for "+ k);
+              commandMove(commands[k].name);
+            }
+          }
+          i = i + endPos;//continue the flow with the next item
           break;
         case "End Repeat":
-          activateFoorLoop = false;
           break;
         case "Give Strawberry":
           break;
@@ -259,7 +285,6 @@ function CodingPresenter(props) {
           commandMove(cm.name);
           evaluateCheckpoint();
       }
-    }
       // moveUp(1) 
 
     });
@@ -275,38 +300,38 @@ function CodingPresenter(props) {
     var win = gameEvalution();
     console.log("Wining is  " + win);
 
-   props.model.setStars(3);  
+
   }
   function commandMove(direction) {
     switch (direction) {
       case "Move Up":
-        pandaCPos =[pandaCPos[0], pandaCPos[1]-1];
+        pandaCPos = [pandaCPos[0], pandaCPos[1] - 1];
         actionSequence.push(pandaCPos[0], pandaCPos[1]);//["MoveUp", parseInt(pos[0]), parseInt(pos[1]) + 1]);
         break;
       case "Move Down":
-        pandaCPos =[pandaCPos[0], pandaCPos[1]+1];
+        pandaCPos = [pandaCPos[0], pandaCPos[1] + 1];
         actionSequence.push(pandaCPos[0], pandaCPos[1]);//(["MoveDown", parseInt(pos[0]), parseInt(pos[1]) - 1]);
         break;
       case "Move Right":
-        pandaCPos =[pandaCPos[0]+1, pandaCPos[1]];
+        pandaCPos = [pandaCPos[0] + 1, pandaCPos[1]];
         actionSequence.push(pandaCPos[0], pandaCPos[1]);//["MoveRight", parseInt(pos[0]) + 1, parseInt(pos[1])]);
         break;
       case "Move Left":
-        pandaCPos =[pandaCPos[0]-1, pandaCPos[1]];
+        pandaCPos = [pandaCPos[0] - 1, pandaCPos[1]];
         actionSequence.push(pandaCPos[0], pandaCPos[1]);//["MoveLeft", parseInt(pos[0]) - 1, parseInt(pos[1])]);
         break;
     }
     console.log("to " + pandaCPos);
   }
-  function evaluateCheckpoint(){
+  function evaluateCheckpoint() {
     var currentCP = checkPoints[0];//validCheckPoints.length];
     console.log("Checkpoint" + checkPoints[0])
-    console.log("Current point "+ pandaCPos);
-    if(currentCP[0] == pandaCPos[0] && currentCP[1] == pandaCPos[1]){
+    console.log("Current point " + pandaCPos);
+    if (currentCP[0] == pandaCPos[0] && currentCP[1] == pandaCPos[1]) {
       console.log("Made it to a checkpoint");
       validCheckPoints.push("1");
     } else {
-     // console.log("no");
+      // console.log("no");
     }
   }
 
@@ -327,9 +352,9 @@ function CodingPresenter(props) {
          elem.style.bottom = bottom + "px";
        }
      }
- 
+   
    }
- 
+   
    function moveDown(rows) {
      //Moves character X positions down
      //Each block is calculated from the size of the screan
@@ -348,8 +373,8 @@ function CodingPresenter(props) {
        }
      }
    }
- 
- 
+   
+   
    function moveRight(columns) {
      let id = null;
      const elem = document.getElementById("rocket");
@@ -367,7 +392,7 @@ function CodingPresenter(props) {
        }
      }
    }
- 
+   
    function moveLeft(columns) {
      let id = null;
      const elem = document.getElementById("rocket");
@@ -396,17 +421,17 @@ function CodingPresenter(props) {
       console.log(stepsStars);
       switch (commands.length - 1) {
         case stepsStars[0]:
-          return 3;
+          props.model.setStars(3);
           break;
         case stepsStars[1]:
-          return 2;
+          props.model.setStars(2);
           break;
         default:
-          return 1;
+          props.model.setStars(1);
       }
     } else {
       console.log("you didn't found all of the checkpoints, sorry, try again");
-      return 0;
+      props.model.setStars(0);
     }
   }
 

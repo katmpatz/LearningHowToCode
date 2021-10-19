@@ -35,7 +35,7 @@ export default class MainModel{
         this.animCharacter = [];
         this.windowVariables = {width: width, height: height, sqw: sqw, sqh:sqh}
         this.observers = [];
-        this.setCurentLevel(1);//curentLevel);
+        this.setCurentLevel(2);//curentLevel);
     }
 
     setLevels(){
@@ -198,7 +198,6 @@ export default class MainModel{
     getStars(){ return stars;}
 
     setStars(amount){ 
-        console.log("Stars : "+ amount);
         stars = amount;
         //Katerina set the observers here.
     }
