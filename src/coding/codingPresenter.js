@@ -294,7 +294,6 @@ function CodingPresenter(props) {
           break;
         default:
           commandMove(cm.name);
-          evaluateCheckpoint();
       }
       // moveUp(1) 
 
@@ -324,33 +323,41 @@ function CodingPresenter(props) {
         actionSequence.push("right");//, pandaCPos);//["MoveLeft", parseInt(pos[0]) - 1, parseInt(pos[1])]);
         break;
     }
+    evaluateCheckpoint();
     console.log("to " + pandaCPos);
   }
 
   function evaluateCheckpoint() {
-    var currentCP = checkPoints[0];//validCheckPoints.length];
-    console.log("Checkpoint" + checkPoints[0])
-    console.log("Current point " + pandaCPos);
-    if (currentCP[0] == pandaCPos[0] && currentCP[1] == pandaCPos[1]) {
-      console.log("Made it to a checkpoint");
-      validCheckPoints.push("1");
-    } else {
-      // console.log("no");
-    }
+    //var currentCP = checkPoints[0];//validCheckPoints.length];
+    checkPoints.forEach((currentCP, i) => {
+
+
+      console.log("Checkpoint" + currentCP)
+      console.log("Current point " + pandaCPos);
+      if (currentCP[0] == pandaCPos[0] && currentCP[1] == pandaCPos[1]) {
+        console.log("Made it to a checkpoint");
+        validCheckPoints.push("1");
+      } else {
+        // console.log("no");
+      }
+    });
   }
 
   function playAnimation() {
 
     let id = null;
     let elem = document.getElementById("rocket");
-    if(elem == null){
+    if (elem == null) {
       elem = document.getElementById("rocket1");
     }
-    if(elem == null){
+    if (elem == null) {
       elem = document.getElementById("rocket2");
     }
     let direction = null;
     let after, itemListAction = 0, d = 0;
+    const initX = parseInt(rocketPosition.bottom);
+    const initY = parseInt(rocketPosition.right);
+
     clearInterval(id);
     id = setInterval(frame, 5);
     function frame() {
@@ -369,7 +376,7 @@ function CodingPresenter(props) {
             break;
           case "right":
             direction = parseInt(rocketPosition.right);
-            after = parseInt(direction + windowVariables.sqw );
+            after = parseInt(direction + windowVariables.sqw);
             break;
           case "left":
             direction = parseInt(rocketPosition.right);
@@ -382,10 +389,15 @@ function CodingPresenter(props) {
 
         d++;
         direction = null;
-      } else if (direction === after && d == actionSequence.length) {
+      } else if (direction === null && d == actionSequence.length) {
+        console.log("end of animation");
+        //elem.style.bottom = initX + 'px';
+       // elem.style.right = initY + 'px';
         clearInterval(id);
+
       } else {
         itemListAction = actionSequence[d];
+        console.log("Animate : " + itemListAction);
         switch (itemListAction) {
           case "bottom":
             direction++;
@@ -439,14 +451,14 @@ function CodingPresenter(props) {
     console.log("stars: " + stars);
   }
 
-  function nextLevel(){
-    props.model.setCurentLevel(level+1);
+  function nextLevel() {
+    props.model.setCurentLevel(level + 1);
   }
 
-  function selectChange(e, category){
-    let {name, value} = e.target;
+  function selectChange(e, category) {
+    let { name, value } = e.target;
     console.log("name: " + name + "value: " + value);
-    if(category = "loop"){
+    if (category = "loop") {
       repeat = parseInt(value);
     }
     //if value == null means that the user didn't change the defauklt vaklue which is 1
@@ -454,9 +466,9 @@ function CodingPresenter(props) {
 
   return (
     <CodingView
-      model = {props.model} 
-      levelTitle ={levelTitle}
-      levelIstructions = {levelIstructions}
+      model={props.model}
+      levelTitle={levelTitle}
+      levelIstructions={levelIstructions}
       blocks={blocks}
       commands={commands}
       onDragOverDelete={(e) => onDragOverDelete(e)} //command
@@ -472,8 +484,8 @@ function CodingPresenter(props) {
       stepsStars={stepsStars}
       stars={stars}
       level={level}
-      selectChange = {(e) => selectChange(e)}
-      //openModal={() => handleClickOpen}
+      selectChange={(e) => selectChange(e)}
+    //openModal={() => handleClickOpen}
     />
   );
 

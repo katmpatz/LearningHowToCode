@@ -121,8 +121,8 @@ export default class MainModel {
                 left: this.rocketStartPositionLeft(3), 
                 right: this.rocketStartPositionRight(3)
               },
-              [[2,1,null],[1,3,null]],//checkPoints, 
-              [4,5], // 3 Stars = 4,  2 Stars = 5, 1 Star = anything else
+              [[1,2,null],[3,1,null]],//checkPoints, 
+              [7,8], // 3 Stars = 4,  2 Stars = 5, 1 Star = anything else
               [{//characterList
                 name: 'bananaPlanet', 
                 row: 2, 
