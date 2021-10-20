@@ -64,8 +64,8 @@ function CodingView(props) {
       </div>
       <div className="coding-panel">
         <div className="description">
-            <h3>Level 1: Visit the planet</h3>
-            <p>Help the little panda to go to the supermarket planet, to start his work. </p>
+            <h3>Level {props.level}: {props.levelTitle}</h3>
+            <p>{props.levelIstructions} </p>
             <p>Drag and drop the actions here:</p>
         </div>
         <div className="commands">

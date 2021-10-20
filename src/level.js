@@ -1,5 +1,5 @@
 export default class Level {
-    constructor(id, istructions, blocksAvailable, rocketPosition, checkPoints, stepsStars, characterList, animCharacter = null) {
+    constructor(id, title, istructions, blocksAvailable, rocketPosition, checkPoints, stepsStars, characterList, animCharacter = null) {
         this.id = id;
         this.istructions = istructions;
         this.blocksAvailable = [...blocksAvailable];
@@ -8,9 +8,15 @@ export default class Level {
         this.stepsStars = [...stepsStars];
         this.characterList = [...characterList];//[[name, row, column, orientation],[name, row, column, orientation]]
         this.animCharacter = [animCharacter]; // [[name ,x1,y1 ,x2,y2 ] ,[name, x1,y1,x2,y2]]
+        this.title = title;
     }
 
+    getTitle(){ return this.title; }
+
+    getIstructions(){ return this.istructions; }
+
     getBlocks(){ return this.blocksAvailable; }
+
 
     getRocketPosition(){ return this.rocketPosition; }
 

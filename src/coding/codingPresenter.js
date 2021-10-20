@@ -15,6 +15,8 @@ function CodingPresenter(props) {
   const checkPoints = useModelProperty(props.model, "checkPoints");
   const stepsStars = useModelProperty(props.model, "stepsStars");
   const level = useModelProperty(props.model, "curentLevel");
+  const levelTitle = useModelProperty(props.model, "levelTitle");
+  const levelIstructions = useModelProperty(props.model, "levelIstructions");
 
   let repeat = 1; //value from select in for 
 
@@ -529,6 +531,8 @@ function CodingPresenter(props) {
   return (
     <CodingView
       model = {props.model} 
+      levelTitle ={levelTitle}
+      levelIstructions = {levelIstructions}
       blocks={blocks}
       commands={commands}
       onDragOverDelete={(e) => onDragOverDelete(e)} //command

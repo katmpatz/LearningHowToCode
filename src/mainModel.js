@@ -24,18 +24,20 @@ export default class MainModel {
         this.levels = [];
         this.curentLevel = curentLevel;
         this.setLevels();
+        this.levelTitle = "";
+        this.levelIstructions = "";
         this.levelBlocks = [];
         this.levelCommands = [];
         this.checkPoints = [];
         this.stepsStars = [];
-        this.startingPoinsssst = [];
+        this.stars = 0;
+        this.startingPoint = [];
         this.rocketPosition = {};
         this.charactersList = [];
         this.animCharacter = [];
         this.windowVariables = { width: width, height: height, sqw: sqw, sqh: sqh }
         this.observers = [];
-        this.setCurentLevel(3);//curentLevel);
-        this.stars = 0;
+        this.setCurentLevel(1);//curentLevel);
     }
 
     setLevels() {
@@ -43,18 +45,19 @@ export default class MainModel {
         //Level 1; the spaceship panda has to move to the planet, it needs only move blocks
         let l1 = new Level(
             1, //id
-            'istructions', //istructions
-            [new BlockModel("Move Down", "move", []), //blocks
-            new BlockModel("Move Up", "move", []),
-            new BlockModel("Move Right", "move", []),
-            new BlockModel("Move Left", "move", [])//,
-            ],
-            { //rocketPosition
-                row: 5,
-                column: 3,
-                top: this.setTop(5),
-                bottom: this.setBottom(5),
-                left: this.rocketStartPositionLeft(3),
+            'Go to the supermarket planet',//title
+            'Our friend Panda works in a supermarket, lets help him by giving him instructions to move to his work.', //istructions
+            [   new BlockModel("Move Down", "move", []), //blocks
+                new BlockModel("Move Up", "move", []),
+                new BlockModel("Move Right", "move", []),
+                new BlockModel("Move Left", "move", [])//,
+              ], 
+              { //rocketPosition
+                row: 5, 
+                column: 3, 
+                top: this.setTop(5), 
+                bottom: this.setBottom(5), 
+                left: this.rocketStartPositionLeft(3), 
                 right: this.rocketStartPositionRight(3)
               },
               [[3,1,null]],//checkPoints,
@@ -71,20 +74,21 @@ export default class MainModel {
         //Level 2; the spaceship panda has to move to the planet, we integratea foor loop to introduce a quicker way to code.
         let l2 = new Level(
             2,
-            'instruction to level2',
-            [new BlockModel("Move Down", "move", []), //blocks
-            new BlockModel("Move Up", "move", []),
-            new BlockModel("Move Right", "move", []),
-            new BlockModel("Move Left", "move", []),
-            new BlockModel("Repeat", "loop", ['1', '2', '3', '4']),
-            new BlockModel("End Repeat", "loop", [])
-            ],
-            { //rocketPosition
-                row: 5,
-                column: 3,
-                top: this.setTop(5),
-                bottom: this.setBottom(5),
-                left: this.rocketStartPositionLeft(3),
+            'Go faster to the supermarket planet',//title
+            'We have to be quicker for work, lets use a loop to repeat the same movement, but with less blocks.',
+            [   new BlockModel("Move Down", "move", []), //blocks
+                new BlockModel("Move Up", "move", []),
+                new BlockModel("Move Right", "move", []),
+                new BlockModel("Move Left", "move", []),
+                new BlockModel("Repeat", "loop", ['1', '2', '3', '4']),
+                new BlockModel("End Repeat", "loop", [])
+              ], 
+              { //rocketPosition
+                row: 5, 
+                column: 3, 
+                top: this.setTop(5), 
+                bottom: this.setBottom(5), 
+                left: this.rocketStartPositionLeft(3), 
                 right: this.rocketStartPositionRight(3)
               },
               [[1,3,null]],//checkPoints, 
@@ -100,20 +104,21 @@ export default class MainModel {
         //Level 3; the spaceship panda has to get bananas from the banana planet and then move to the position of the monkey, they use move and loop blocks
         let l3 = new Level(
             3,
-            'instruction to level3',
-            [new BlockModel("Move Down", "move", []), //blocks
-            new BlockModel("Move Up", "move", []),
-            new BlockModel("Move Right", "move", []),
-            new BlockModel("Move Left", "move", []),
-            new BlockModel("Repeat", "loop", ['1', '2', '3', '4']),
-            new BlockModel("End Repeat", "loop", [])
-            ],
-            { //rocketPosition
-                row: 5,
-                column: 3,
-                top: this.setTop(5),
-                bottom: this.setBottom(5),
-                left: this.rocketStartPositionLeft(3),
+            'Delever bananas to the monkeys',//title
+            'Monky friend order some Bananas. The good Panda will deliver them to him, lets go and pick up the bananas at the Banana planet and get back to Monkeys house.',
+            [   new BlockModel("Move Down", "move", []), //blocks
+                new BlockModel("Move Up", "move", []),
+                new BlockModel("Move Right", "move", []),
+                new BlockModel("Move Left", "move", []),
+                new BlockModel("Repeat", "loop", ['1', '2', '3', '4']),
+                new BlockModel("End Repeat", "loop", [])
+              ], 
+              { //rocketPosition
+                row: 5, 
+                column: 3, 
+                top: this.setTop(5), 
+                bottom: this.setBottom(5), 
+                left: this.rocketStartPositionLeft(3), 
                 right: this.rocketStartPositionRight(3)
               },
               [[1,3,"banana"],[4,1,null]],//checkPoints, 
@@ -136,6 +141,7 @@ export default class MainModel {
         //Turtle = Strawberry, Monkey = Banana, Rabbit = Carrot
         let l4 = new Level(
             4,
+            'title',//title
             'instruction to level4',
             [new BlockModel("Move Down", "move", []), //blocks
             new BlockModel("Move Up", "move", []),
@@ -186,7 +192,9 @@ export default class MainModel {
             this.rocketPosition = rp;
             const cl = level.getCharacterList();
             this.charactersList = [...cl];
-            this.notifyObservers();
+            this.levelTitle = level.getTitle();
+            this.levelIstructions = level.getIstructions();
+            this.notifyObservers();   
         }
     }
 
