@@ -92,7 +92,7 @@ function CodingView(props) {
       <SimpleDialog
         open={open}
         onClose={handleClose}
-        stars={props.stepsStars}
+        stars={props.stars}
         level={props.level}
         model = {props.model} 
       />

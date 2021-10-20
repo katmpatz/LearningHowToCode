@@ -91,7 +91,7 @@ export default class MainModel {
                 left: this.rocketStartPositionLeft(3), 
                 right: this.rocketStartPositionRight(3)
               },
-              [[1,3,null]],//checkPoints, 
+              [[3,1,null]],//checkPoints, 
               [4,5], // 3 Stars = 4,  2 Stars = 5, 1 Star = anything else
               [{//characterList
                 name: 'bananaPlanet', 
@@ -121,7 +121,7 @@ export default class MainModel {
                 left: this.rocketStartPositionLeft(3), 
                 right: this.rocketStartPositionRight(3)
               },
-              [[1,3,"banana"],[4,1,null]],//checkPoints, 
+              [[2,1,null],[1,3,null]],//checkPoints, 
               [4,5], // 3 Stars = 4,  2 Stars = 5, 1 Star = anything else
               [{//characterList
                 name: 'bananaPlanet', 
@@ -190,6 +190,8 @@ export default class MainModel {
             this.stepsStars = [...ss];
             const rp = level.getRocketPosition();
             this.rocketPosition = rp;
+            this.rocketPosition.bottom = 0;
+            console.log("this.rocketPosition.bottom: " + this.rocketPosition.bottom);
             const cl = level.getCharacterList();
             this.charactersList = [...cl];
             this.levelTitle = level.getTitle();

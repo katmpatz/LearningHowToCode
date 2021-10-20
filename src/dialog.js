@@ -14,6 +14,7 @@ export default function SimpleDialog(props) {
 
     function nextLevel(){
       props.model.setCurentLevel(props.level+1);
+      props.model.rocketPosition.bottom = 0;
       onClose();
     }
 

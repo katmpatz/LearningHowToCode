@@ -6,6 +6,7 @@ import { LocalPrintshopSharp } from '@material-ui/icons';
 import { DinnerDining } from '@mui/icons-material';
 
 
+
 function CodingPresenter(props) {
 
   const blocks = useModelProperty(props.model, "levelBlocks");
@@ -14,6 +15,7 @@ function CodingPresenter(props) {
   const commands = useModelProperty(props.model, "levelCommands");
   const checkPoints = useModelProperty(props.model, "checkPoints");
   const stepsStars = useModelProperty(props.model, "stepsStars");
+  const stars = useModelProperty(props.model, "stars");
   const level = useModelProperty(props.model, "curentLevel");
   const levelTitle = useModelProperty(props.model, "levelTitle");
   const levelIstructions = useModelProperty(props.model, "levelIstructions");
@@ -297,19 +299,12 @@ function CodingPresenter(props) {
       // moveUp(1) 
 
     });
-    //moveUp(3);
-    //moveRight(1);
-    //moveDown(1);
-    //moveLeft(2);
-    //console.log("List of actions");
-    /*actionSequence.forEach((a, i) => {
-      console.log(a[1]);
-    })*/
 
-    var win = gameEvalution();
-    console.log("Wining is  " + win);
+    gameEvalution();
 
   }
+
+
   function commandMove(direction) {
     switch (direction) {
       case "Move Up":
@@ -331,6 +326,7 @@ function CodingPresenter(props) {
     }
     console.log("to " + pandaCPos);
   }
+
   function evaluateCheckpoint() {
     var currentCP = checkPoints[0];//validCheckPoints.length];
     console.log("Checkpoint" + checkPoints[0])
@@ -346,7 +342,13 @@ function CodingPresenter(props) {
   function playAnimation() {
 
     let id = null;
-    const elem = document.getElementById("rocket");
+    let elem = document.getElementById("rocket");
+    if(elem == null){
+      elem = document.getElementById("rocket1");
+    }
+    if(elem == null){
+      elem = document.getElementById("rocket2");
+    }
     let direction = null;
     let after, itemListAction = 0, d = 0;
     clearInterval(id);
@@ -394,8 +396,6 @@ function CodingPresenter(props) {
             direction--;
             rocketPosition.bottom = direction;
             elem.style.bottom = direction + "px";
-            // rocketPosition.top = direction;
-            // elem.style.top = direction + "px";
             break;
           case "right":
             direction++;
@@ -412,82 +412,7 @@ function CodingPresenter(props) {
       }
     }
   }
-  function moveUp(rows) {
-    //Moves character X blocks Up
-    //Each block is calculated from the size of the screan
-    let id = null;
-    const elem = document.getElementById("rocket");
-    let bottom = parseInt(rocketPosition.bottom);
-    let afterBottom = parseInt(bottom + windowVariables.sqh * rows)
-    clearInterval(id);
-    id = setInterval(frame, 5);
-    function frame() {
-      if (bottom === afterBottom) {
-        clearInterval(id);
-      } else {
-        bottom++;
-        elem.style.bottom = bottom + "px";
-      }
-    }
 
-  }
-  /*
-     
-  function moveRight(columns) {
-    let id = null;
-    const elem = document.getElementById("rocket");
-    let pos = parseInt(rocketPosition.left);
-    //the position after the movement is equal to the current position plus the width of the columns that will move
-    let afterPos = parseInt(pos + windowVariables.sqw * columns);
-    clearInterval(id);
-    id = setInterval(frame, 5);
-    function frame() {
-      if (pos === afterPos) {
-        clearInterval(id);
-      } else {
-        pos++;
-        elem.style.left = pos + "px";
-      }
-    }
-  }
-  function moveDown(rows) {
-    //Moves character X positions down
-    //Each block is calculated from the size of the screan
-    let id = null;
-    const elem = document.getElementById("rocket");
-    let top = parseInt(rocketPosition.top);
-    let afterTop = parseInt(top + windowVariables.sqh * rows)
-    clearInterval(id);
-    id = setInterval(frame, 5);
-    function frame() {
-      if (top === afterTop) {
-        clearInterval(id);
-      } else {
-        top++;
-        elem.style.top = top + "px";
-      }
-    }
-  }
-   
-
-   
-  function moveLeft(columns) {
-    let id = null;
-    const elem = document.getElementById("rocket");
-    let pos = parseInt(rocketPosition.right);
-    //the position after the movement is equal to the current position plus the width of the columns that will move
-    let afterPos = parseInt(pos + windowVariables.sqw * columns);
-    clearInterval(id);
-    id = setInterval(frame, 5);
-    function frame() {
-      if (pos === afterPos) {
-        clearInterval(id);
-      } else {
-        pos++;
-        elem.style.right = pos + "px";
-      }
-    }
-  }*/
 
   function gameEvalution() {
     playAnimation();
@@ -496,7 +421,6 @@ function CodingPresenter(props) {
     if (validCheckPoints.length == checkPoints.length) {
       //Now that the user pas, we will check how many stars his program should get
       //There is no right or wrong way to do it, we just evaluate the lenght of code
-      console.log(" Win");
       console.log(stepsStars);
       switch (commands.length - 1) {
         case stepsStars[0]:
@@ -512,7 +436,7 @@ function CodingPresenter(props) {
       console.log("you didn't found all of the checkpoints, sorry, try again");
       props.model.setStars(0);
     }
-    console.log(stepsStars);
+    console.log("stars: " + stars);
   }
 
   function nextLevel(){
@@ -546,6 +470,7 @@ function CodingPresenter(props) {
       onDragStartDelete={(ev, id) => onDragStartDelete(ev, id)}
       myMove={() => runCode()}
       stepsStars={stepsStars}
+      stars={stars}
       level={level}
       selectChange = {(e) => selectChange(e)}
       //openModal={() => handleClickOpen}
