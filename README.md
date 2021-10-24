@@ -1,70 +1,41 @@
-# Getting Started with Create React App
+# Getting Started with LearningHowToCode
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![alt text](https://github.com/katmpatz/LearningHowToCode/blob/master/src/img/Banana_Planet.png?raw=true)
 
-## Available Scripts
+## Description 
+LearningHowToCode is a web application that teaches the logic of programming to young children, from 9 to 15 years old. Through gamified challenges the children will get familiar with programming concepts like simple commands, variables, if/else statements, for loops and more. For example, in our game the kids have to help a little panda to complete some challenges at the space. The kids have to choose some Commands from a menu (ex. move, repeat), drag and drop them in a canvas in order to execute an action, if the player place the commands in the right order and then run their code they will see the results. When kids complete a challenge we will value their performance and then they will move forward to the next level. 
 
-In the project directory, you can run:
+### Description of the challenges
 
-### `npm start`
+A panda is discovering the universe with its little spaceship. The challenges that it has to face are the followings:
+- The panda has to go to its work, the super market planet by moving up/down/right/left in the space (the blocks will be move up, move down, move left, move right, it's not possible to choose a number of steps to move)
+- The panda is late and has to go to his work at the super market planet really fast! So instead of repeating the movement blocks, the kid has to use a repeat block. With this way the spaceship will be in a turbo mood, and the panda will arrive on time!
+- The panda has to deliver some bananas at its monkey friends! He has to visit the banana planet, take the bananas and after visit the monkey's planet.
+- The panda is working to the supermarket planet. If a monkey come it has to give some bananas, if a rabbit come some carrots and some strawberries at the turtles. 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+**Note: The last feature is not implemented yet.**
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Technical Description
+For the developement of the application we used React.js, MaterialUI and CSS. Also, we used an MVC architecture. In more detail we seperated the logic from the UI part and we have for each component a view and a controller(presenter) file. The view displays the output and the visual elements and the controller observes and handles the changes happening to the view in order to update the model. The model of our application has information about the different challenges (ect. level, description, commands, status, stars, help).  
 
-### `npm test`
+## How to download and run the project
+Node.js and npm are required to run your project at your computer. To download them click [here](https://nodejs.org/en/download/).If you have any problem with the installation see [this](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) article about how to download and use node.js and npm.      
+Also for this project you will need a terminal, we used [gitBash](https://git-scm.com/downloads).
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+After you download all the neccesary programs you have to follow the next steps:
 
-### `npm run build`
+1. Open your terminal go to the folder that you want to save the project and clone the project there. 
+`git clone https://github.com/katmpatz/LearningHowToCode.git` 
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+2. Then go to the program directory:
+`cd LearningHowToCode` 
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+3. Install all the necessary node libraries for the prioject:
+`npm install` 
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3. Run the project.:
+`npm start` 
 
-### `npm run eject`
+A new window at your browser will open, probably at the port 3000 and will you be able to use the project.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

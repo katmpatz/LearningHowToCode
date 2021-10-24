@@ -4,6 +4,7 @@ import CommandModel from '../command/commandModel';
 import useModelProperty from '../customHook';
 import { LocalPrintshopSharp } from '@material-ui/icons';
 import { DinnerDining } from '@mui/icons-material';
+import { useState, useEffect } from 'react';
 
 
 
@@ -19,8 +20,28 @@ function CodingPresenter(props) {
   const level = useModelProperty(props.model, "curentLevel");
   const levelTitle = useModelProperty(props.model, "levelTitle");
   const levelIstructions = useModelProperty(props.model, "levelIstructions");
+  const [open, setOpen] = React.useState(false);
+  const [ev, setEv] = React.useState(false);
+  const [bottomStart, setBottomStart] = React.useState(rocketPosition.bottom);
+  const [rightStart, setRightStart] = React.useState(rocketPosition.right);
+  const [repeat, setRepeat] = React.useState(1);
+  
 
-  let repeat = 1; //value from select in for 
+  useEffect(() => {
+    setOpen(false);
+    // On mount shows "null"
+}, [level]);
+
+useEffect(() => {
+  let rocket = document.getElementById("rocket");
+  setBottomStart(props.model.setBottom(rocketPosition.row));
+  setRightStart(props.model.rocketStartPositionRight(rocketPosition.column));
+  rocket.style.bottom = bottomStart + "px";
+  rocket.style.right = rightStart + "px";
+  setEv(false);
+  // On mount shows "null"
+}, [ev]);
+
 
   let validCheckPoints = [];
   let itemsInsideFoor = [];
@@ -294,7 +315,6 @@ function CodingPresenter(props) {
           break;
         default:
           commandMove(cm.name);
-          evaluateCheckpoint();
       }
       // moveUp(1) 
 
@@ -324,12 +344,17 @@ function CodingPresenter(props) {
         actionSequence.push("right");//, pandaCPos);//["MoveLeft", parseInt(pos[0]) - 1, parseInt(pos[1])]);
         break;
     }
+    evaluateCheckpoint();
+
     console.log("to " + pandaCPos);
   }
 
   function evaluateCheckpoint() {
-    var currentCP = checkPoints[0];//validCheckPoints.length];
-    console.log("Checkpoint" + checkPoints[0])
+    
+    //var currentCP = checkPoints[0];//validCheckPoints.length];
+    checkPoints.forEach((currentCP, i) => {
+      
+    console.log("Checkpoint" + currentCP)
     console.log("Current point " + pandaCPos);
     if (currentCP[0] == pandaCPos[0] && currentCP[1] == pandaCPos[1]) {
       console.log("Made it to a checkpoint");
@@ -337,18 +362,14 @@ function CodingPresenter(props) {
     } else {
       // console.log("no");
     }
-  }
+  });
+}
 
   function playAnimation() {
 
     let id = null;
     let elem = document.getElementById("rocket");
-    if(elem == null){
-      elem = document.getElementById("rocket1");
-    }
-    if(elem == null){
-      elem = document.getElementById("rocket2");
-    }
+
     let direction = null;
     let after, itemListAction = 0, d = 0;
     clearInterval(id);
@@ -415,10 +436,14 @@ function CodingPresenter(props) {
 
 
   function gameEvalution() {
+    setEv(true);
     playAnimation();
     console.log(checkPoints);
     //Evaluate if the amount of Valid checkpoints matches the level checkpoint
     if (validCheckPoints.length == checkPoints.length) {
+      setOpen(true);
+      rocketPosition.right = rightStart;
+      rocketPosition.bottom = bottomStart;
       //Now that the user pas, we will check how many stars his program should get
       //There is no right or wrong way to do it, we just evaluate the lenght of code
       console.log(stepsStars);
@@ -436,7 +461,11 @@ function CodingPresenter(props) {
       console.log("you didn't found all of the checkpoints, sorry, try again");
       props.model.setStars(0);
     }
+    setOpen(true);
+    rocketPosition.right = rightStart;
+    rocketPosition.bottom = bottomStart;
     console.log("stars: " + stars);
+    console.log("open: " + open);
   }
 
   function nextLevel(){
@@ -447,10 +476,15 @@ function CodingPresenter(props) {
     let {name, value} = e.target;
     console.log("name: " + name + "value: " + value);
     if(category = "loop"){
-      repeat = parseInt(value);
+      setRepeat(parseInt(value));
     }
+    console.log("vaklue seklect: " + repeat);
     //if value == null means that the user didn't change the defauklt vaklue which is 1
   }
+
+  function handleClose(value){
+    setOpen(false);
+  };
 
   return (
     <CodingView
@@ -469,9 +503,11 @@ function CodingPresenter(props) {
       onDragStart={(ev, id) => onDragStart(ev, id)}
       onDragStartDelete={(ev, id) => onDragStartDelete(ev, id)}
       myMove={() => runCode()}
+      handleClose = {handleClose}
       stepsStars={stepsStars}
       stars={stars}
       level={level}
+      open={open}
       selectChange = {(e) => selectChange(e)}
       //openModal={() => handleClickOpen}
     />

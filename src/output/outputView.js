@@ -38,11 +38,11 @@ function OutputView(props) {
             style={{position: 'absolute',  bottom:props.model.levelCommands.length < 2 ? 0 : props.model.rocketPosition.bottom, right:props.model.rocketPosition.right}}/>
           }
           {props.model.curentLevel == 2 &&
-            <img id="rocket1" src={rocket} height={props.sqh}
+            <img id="rocket" src={rocket} height={props.sqh}
             style={{position: 'absolute',  bottom:0, right:props.model.rocketPosition.right}}/>
           }
          {props.model.curentLevel == 3 &&
-            <img id="rocket2" src={rocket} height={props.sqh}
+            <img id="rocket" src={rocket} height={props.sqh}
             style={{position: 'absolute',  bottom:0, right:props.model.rocketPosition.right}}/>
           }
           

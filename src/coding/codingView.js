@@ -12,15 +12,15 @@ function CodingView(props) {
     let blocks = []
     let commands = []
 
-    const [open, setOpen] = React.useState(false);
-  
+    const [open, setOpen] = React.useState(props.open);
+
     const handleClickOpen = () => {
       setOpen(true);
     };
   
-    const handleClose = (value) => {
-      setOpen(false);
-    };
+    // const handleClose = (value) => {
+    //   setOpen(false);
+    // };
 
   props.blocks.forEach ((b, i) => {
     blocks.push(
@@ -42,9 +42,9 @@ function CodingView(props) {
              style = {{backgroundColor: props.setBgColor(c.category), borderColor: props.setBrColor(c.category)}}>
                 <span id="label">{c.name}</span>
                 {c.select.length > 0 &&
-                    <select id="select" onChange={(e) => props.selectChange(e, c.category)} defaultValue={'1'}>
+                    <select id="select" onChange={(e) => props.selectChange(e, c.category)}>
                         {c.select.map((x,y) => 
-                          <option key={y} value={x}>{x}</option>
+                          <option key={y} value={y+1}>{x}</option>
                         )}
                      </select>
                 }
@@ -90,8 +90,8 @@ function CodingView(props) {
         </div>
       </div>
       <SimpleDialog
-        open={open}
-        onClose={handleClose}
+        open={props.open}
+        onClose={props.handleClose}
         stars={props.stars}
         level={props.level}
         model = {props.model} 
