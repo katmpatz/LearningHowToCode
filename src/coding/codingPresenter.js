@@ -2,8 +2,6 @@ import React from 'react';
 import CodingView from './codingView';
 import CommandModel from '../command/commandModel';
 import useModelProperty from '../customHook';
-import { LocalPrintshopSharp } from '@material-ui/icons';
-import { DinnerDining } from '@mui/icons-material';
 import { useState, useEffect } from 'react';
 
 
@@ -345,8 +343,6 @@ useEffect(() => {
         break;
     }
     evaluateCheckpoint();
-
-    console.log("to " + pandaCPos);
   }
 
   function evaluateCheckpoint() {
@@ -369,9 +365,11 @@ useEffect(() => {
 
     let id = null;
     let elem = document.getElementById("rocket");
-
     let direction = null;
     let after, itemListAction = 0, d = 0;
+    const initX = parseInt(rocketPosition.bottom);
+    const initY = parseInt(rocketPosition.right);
+
     clearInterval(id);
     id = setInterval(frame, 5);
     function frame() {
@@ -390,7 +388,7 @@ useEffect(() => {
             break;
           case "right":
             direction = parseInt(rocketPosition.right);
-            after = parseInt(direction + windowVariables.sqw );
+            after = parseInt(direction + windowVariables.sqw);
             break;
           case "left":
             direction = parseInt(rocketPosition.right);
@@ -403,10 +401,15 @@ useEffect(() => {
 
         d++;
         direction = null;
-      } else if (direction === after && d == actionSequence.length) {
+      } else if (direction === null && d == actionSequence.length) {
+        console.log("end of animation");
+        //elem.style.bottom = initX + 'px';
+       // elem.style.right = initY + 'px';
         clearInterval(id);
+
       } else {
         itemListAction = actionSequence[d];
+        console.log("Animate : " + itemListAction);
         switch (itemListAction) {
           case "bottom":
             direction++;
@@ -468,12 +471,12 @@ useEffect(() => {
     console.log("open: " + open);
   }
 
-  function nextLevel(){
-    props.model.setCurentLevel(level+1);
+  function nextLevel() {
+    props.model.setCurentLevel(level + 1);
   }
 
-  function selectChange(e, category){
-    let {name, value} = e.target;
+  function selectChange(e, category) {
+    let { name, value } = e.target;
     console.log("name: " + name + "value: " + value);
     if(category = "loop"){
       setRepeat(parseInt(value));
@@ -488,9 +491,9 @@ useEffect(() => {
 
   return (
     <CodingView
-      model = {props.model} 
-      levelTitle ={levelTitle}
-      levelIstructions = {levelIstructions}
+      model={props.model}
+      levelTitle={levelTitle}
+      levelIstructions={levelIstructions}
       blocks={blocks}
       commands={commands}
       onDragOverDelete={(e) => onDragOverDelete(e)} //command
