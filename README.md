@@ -1,6 +1,6 @@
 # Getting Started with LearningHowToCode
 
-![alt text](https://github.com/katmpatz/LearningHowToCode/blob/master/src/img/Banana_Planet.png?raw=true)
+![alt text](https://github.com/katmpatz/LearningHowToCode/blob/master/src/img/app.png?raw=true)
 
 ## Description 
 LearningHowToCode is a web application that teaches the logic of programming to young children, from 9 to 15 years old. Through gamified challenges the children will get familiar with programming concepts like simple commands, variables, if/else statements, for loops and more. For example, in our game the kids have to help a little panda to complete some challenges at the space. The kids have to choose some Commands from a menu (ex. move, repeat), drag and drop them in a canvas in order to execute an action, if the player place the commands in the right order and then run their code they will see the results. When kids complete a challenge we will value their performance and then they will move forward to the next level. 
@@ -25,16 +25,16 @@ Also for this project you will need a terminal, we used [gitBash](https://git-sc
 After you download all the neccesary programs you have to follow the next steps:
 
 1. Open your terminal go to the folder that you want to save the project and clone the project there. 
-`git clone https://github.com/katmpatz/LearningHowToCode.git` 
+    `git clone https://github.com/katmpatz/LearningHowToCode.git` 
 
 2. Then go to the program directory:
-`cd LearningHowToCode` 
+    `cd LearningHowToCode` 
 
 3. Install all the necessary node libraries for the prioject:
-`npm install` 
+    `npm install` 
 
 3. Run the project.:
-`npm start` 
+    `npm start` 
 
 A new window at your browser will open, probably at the port 3000 and will you be able to use the project.
 
