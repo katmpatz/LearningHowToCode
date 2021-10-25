@@ -13,7 +13,15 @@ import lose from './img/Panda_lose.png';
 export default function SimpleDialog(props) {
 
     function nextLevel(){
-      props.model.setCurentLevel(props.level+1);
+      if(props.level < props.model.levels.length - 1){
+        props.model.setCurentLevel(props.level+1);
+      }
+      props.model.rocketPosition.bottom = 0;
+      onClose();
+    }
+
+    function startLevel(){
+      props.model.setCurentLevel(1);
       props.model.rocketPosition.bottom = 0;
       onClose();
     }
@@ -35,6 +43,9 @@ export default function SimpleDialog(props) {
           </div>
           {props.stars > 0 ?
           <div>
+             {(props.level == props.model.levels.length - 1) &&
+              <h3>That was the last level.</h3>
+             }
             <h3>You succesfully complete this level with {props.stars} stars!</h3>
             <StarIcon fontSize="large" style={{color: '#FBBB40'}}/>
             {props.stars > 1 ? <StarIcon fontSize="large" style={{color: '#FBBB40'}}/> : <StarBorderIcon fontSize="large" style={{color: '#FBBB40'}}/> }
@@ -50,11 +61,17 @@ export default function SimpleDialog(props) {
           <Button variant="contained" autoFocus onClick={handleClose} style={{backgroundColor: "rgb(245, 86, 136)"}}>
             Try again
           </Button>
-          {props.stars > 0 && 
+          {(props.stars > 0 && props.level < props.model.levels.length - 1) &&
               <Button variant="contained" autoFocus onClick={nextLevel} style={{backgroundColor: "#40FBD9"}}>
                   Next level
               </Button>
           }
+          {(props.level == props.model.levels.length - 1) &&
+              <Button variant="contained" autoFocus onClick={startLevel} style={{backgroundColor: "#40FBD9"}}>
+                  Start again the challenges
+              </Button>
+          }
+          
         </DialogActions>
         </DialogContent>
       </Dialog>

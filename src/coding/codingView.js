@@ -6,6 +6,8 @@ import SimpleDialog from '../dialog';
 import {ReactComponent as HelpIcon} from '../help.svg';
 import {ReactComponent as DeleteIcon} from '../delete.svg';
 import {ReactComponent as PlayIcon} from '../play_arrow.svg';
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
 
 function CodingView(props) {
   
@@ -33,9 +35,11 @@ function CodingView(props) {
   props.commands.forEach ((c) => {
     commands.push(
       <div key={c.id} 
-      style={{top: c.top,  position: 'absolute'}} 
+      style={{top: c.top,  position: 'absolute'}}
+      
       onDragOver={(e)=>props.onDragOverDelete(e)} 
       onDragStart={(e)=>props.onDragStartDelete(e, c.id)}>
+  
         <div className={c.name === "If" || c.name === "loop" ? "command-select" : "command"} 
              id={props.insideCommand(c) ? "inside" : ""} 
              draggable
@@ -75,6 +79,7 @@ function CodingView(props) {
               </div>
         </div>
         <div className="buttons-panel">
+          {props.errorMessage != "" && <Alert severity="error">{props.errorMessage}</Alert>}
           <div className="delete-panel" onDragOver={(e)=>props.onDragOver(e)} onDrop={(e)=>props.onDropDelete(e)}>
             <DeleteIcon id="delete"/>
           </div>

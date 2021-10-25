@@ -10,42 +10,6 @@ function Command(props){
     const [select, setSelect] = React.useState([...props.select]);
 
      
-    // React.useEffect(
-    //     function(){
-    //         setColor();
-    //     }, []); // case 1, execute at creation
-
-
-    // function setColor() {
-    //     //set colors based on the category
-    //     if(category === 'move') {
-    //         setBgColor('#AA57A2');
-    //         setBrColor('#313873');
-    //     } else if(category === 'if' || category === 'ifEnd') {
-    //         setBgColor('#FBBB40');
-    //         setBrColor('#CF931E');
-    //     } else if(category === 'loop' || category === 'loopEnd') {
-    //         setBgColor('#40FBD9');
-    //         setBrColor('#00B695');
-    //     } 
-    // }
-
-    // function insideCommand(c) {
-    //     //check if the command is inside an if or loop block  
-    //     let inside = false
-    //     for(let i=1; i< c.order; i++){
-    //       if( commands[i].name == 'If' || commands[i].name == 'Repeat'){
-    //         inside = true;
-    //       }
-    //       if( commands[i].name == 'End If' || commands[i].name == 'End Repeat'){
-    //         inside = false;
-    //       }
-    //     }
-    //     if(c.name == 'End If' || c.name == 'End Repeat'){
-    //       inside = false;
-    //     }
-    //     return inside;
-    //   } 
       
       function setBgColor(category) {
         //set colors based on the category

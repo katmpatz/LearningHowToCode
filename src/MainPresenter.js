@@ -1,14 +1,10 @@
 import React from 'react';
-import CodingPresenter from './coding/codingPresenter';
-import OutputPresenter from './output/outputPresenter';
+import MainView from './MainView';
 
 function MainPresenter(props){
   
     return (
-      <div className="main-grid">
-          <CodingPresenter model = {props.model}/>
-          <OutputPresenter model = {props.model}/>
-      </div>
+        <MainView model = {props.model}/>
     ); 
 
 }

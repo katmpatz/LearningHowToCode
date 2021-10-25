@@ -23,6 +23,7 @@ function CodingPresenter(props) {
   const [bottomStart, setBottomStart] = React.useState(rocketPosition.bottom);
   const [rightStart, setRightStart] = React.useState(rocketPosition.right);
   const [repeat, setRepeat] = React.useState(1);
+  const [errorMessage, setErrorMessage] = React.useState(1);
   
 
   useEffect(() => {
@@ -34,6 +35,7 @@ useEffect(() => {
   let rocket = document.getElementById("rocket");
   setBottomStart(props.model.setBottom(rocketPosition.row));
   setRightStart(props.model.rocketStartPositionRight(rocketPosition.column));
+  setErrorMessage("")
   rocket.style.bottom = bottomStart + "px";
   rocket.style.right = rightStart + "px";
   setEv(false);
@@ -103,6 +105,7 @@ useEffect(() => {
   }
 
   function onDrop(ev) {
+    setErrorMessage("")
     let idc = 0, top = 0;
     console.log("dropY: " + ev.clientY);
     //position when the user drop the item
@@ -111,7 +114,9 @@ useEffect(() => {
     //get the selected block
     let bl = blocks.find(element => element.name === bname);
     console.log("bkl: " + JSON.stringify(bl));
+    //check if the seklected item is a block or the initial command
     if (bl === null || bl === undefined) {
+      if (bname != 0) {
       let c1 = commands.find(element => element.id == bname);
       //find the element which includes the drop position
       for (let i = 1; i < commands.length; i++) {
@@ -130,52 +135,56 @@ useEffect(() => {
               .forEach((cm) => { cm.order = k++ })
           }
         }
+        }
       }
     } else {
+        //don't let the user use more than ten commands
+        if(commands.length < 11){
+          //set the name and the category of the command
+          let name = bl.name;
+          let category = bl.category;
+          let select = bl.select;
 
-      //set the name and the category of the command
-      let name = bl.name;
-      let category = bl.category;
-      let select = bl.select;
+          let index = commands.length;
+          //console.log("Index1: " + index);
+          //set the default position as the position after the last command
+          let minDifferenceTop = commands.slice(-1)[0].top;
 
-      let index = commands.length;
-      //console.log("Index1: " + index);
-      //set the default position as the position after the last command
-      let minDifferenceTop = commands.slice(-1)[0].top;
-
-      //if the user drop the block between the first and the klast command
-      if (dropY < minDifferenceTop && dropY > commands[0].top) {
-        //console.log("dropY < minDifferenceTop && dropY > commands[0].top" );
-        //find the closest command at the drop position
-        for (let i = 1; i < commands.length; i++) {
-          if (dropY >= commands[i - 1].top + heightB / 2 && dropY <= commands[i].top + heightB / 2) {
-            minDifferenceTop = commands[i].top;
-            //console.log("minDifferenceTop : " + minDifferenceTop );
-            //add the item on the bottom of the current one
-            index = i;
-            //console.log("Index2: " + index);
+          //if the user drop the block between the first and the klast command
+          if (dropY < minDifferenceTop && dropY > commands[0].top) {
+            //console.log("dropY < minDifferenceTop && dropY > commands[0].top" );
+            //find the closest command at the drop position
+            for (let i = 1; i < commands.length; i++) {
+              if (dropY >= commands[i - 1].top + heightB / 2 && dropY <= commands[i].top + heightB / 2) {
+                minDifferenceTop = commands[i].top;
+                //console.log("minDifferenceTop : " + minDifferenceTop );
+                //add the item on the bottom of the current one
+                index = i;
+                //console.log("Index2: " + index);
+              }
+            }
+            //place it on the bottom of the element that the user drop the block
+            top = minDifferenceTop;
+            //change the order of the commands after it 
+            moveOrderDown(index + 1);
+          } else {
+            //place it on the bottom of the last element
+            top = minDifferenceTop + heightB / 2;
           }
+
+          idc = id;
+          setId(idc += 1);
+          //console.log("Top " + top);
+
+          // create new command object 
+          const c = new CommandModel(idc, index, name, category, top, select);
+
+          //add command at the list
+          commands.splice(index, 0, c);
+        } else { 
+          //if the commands are more than ten appear error message
+          setErrorMessage("Try to solve this challenge with less than 10 commands")
         }
-        //place it on the bottom of the element that the user drop the block
-        top = minDifferenceTop;
-        //change the order of the commands after it 
-        moveOrderDown(index + 1);
-      } else {
-        //place it on the bottom of the last element
-        top = minDifferenceTop + heightB / 2;
-      }
-
-      idc = id;
-      setId(idc += 1);
-      //console.log("Top " + top);
-
-      // create new command object 
-      const c = new CommandModel(idc, index, name, category, top, select);
-
-      //add command at the list
-      commands.splice(index, 0, c);
-
-
     }
     //console.log(commands);
     //get the commands with the position based on their order
@@ -184,19 +193,22 @@ useEffect(() => {
   }
 
   function onDropDelete(ev) {
-    let id = ev.dataTransfer.getData("id");
-    //console.log("id:"+ id);
-    const bl = commands.find(element => element.id == id);
-    //console.log("bl.name:" + bl.name + bl.id);
+    setErrorMessage("")
+    let bname = ev.dataTransfer.getData("id");
+    //get the selected block
+    let bl = blocks.find(element => element.name === bname);
+    console.log("bkl: " + JSON.stringify(bl));
+    //check if the seklected item is a block or the initial command
+    if ((bl === null || bl === undefined) && bname != 0) {
+      let c1 = commands.find(element => element.id == bname);
 
-    const index = commands.indexOf(bl);
-    commands.splice(index, 1);
-    moveOrderUp(index + 1)
-    const cmd = drawCommands();
+      const index = commands.indexOf(c1);
+      commands.splice(index, 1);
+      moveOrderUp(index + 1)
+      const cmd = drawCommands();
 
-    //console.log(commands)
-
-    props.model.setCommands([...cmd])
+      props.model.setCommands([...cmd])
+    }
   }
 
 
@@ -512,7 +524,7 @@ useEffect(() => {
       level={level}
       open={open}
       selectChange = {(e) => selectChange(e)}
-      //openModal={() => handleClickOpen}
+      errorMessage = {errorMessage}
     />
   );
 
