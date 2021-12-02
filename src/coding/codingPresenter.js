@@ -257,7 +257,7 @@ useEffect(() => {
     }
   }
 
-  function runCode() {
+  function play() {
     // Gets the code and animate step by step
     //Starts with 1 because 0 is "When play"
     //var pos = [parseInt(rocketPosition.left),parseInt(rocketPosition.right)]//
@@ -285,24 +285,11 @@ useEffect(() => {
           console.log("repeat:" + repeat);
 
           //Get all items from the list of commands that have the End Repeat block
-          endlist = [commands.findIndex(o => o.name == "End Repeat")];//itemsInsideFoor.push(cm);
+          endPos = getNextEnd(commands, i, "End Repeat");
+          // [commands.findIndex(o => o.name == "End Repeat")];//itemsInsideFoor.push(cm);
 
-          if (endlist.length <= 0) { // if there is no "End Repeat"
+          if (endPos  <= 0) { // if there is no "End Repeat"
             gameEvalution(); //End game
-            break;
-          }
-          console.log("NOW THERE ARE:" + endlist.length + " and i is: " + i);
-
-          endlist.forEach((m, l) => { //Get the next "End Repeat after the Start Repeat"
-            if (m > i) {
-              endPos = m;
-            }
-          });
-
-          console.log("m = " + endPos);
-          // Check if the position of "End Repeat" is invalid
-          if (endPos == -1) {
-            gameEvalution();//End game
             break;
           }
 
@@ -332,6 +319,19 @@ useEffect(() => {
 
     gameEvalution();
 
+  }
+
+  function getNextEnd(arr, current, match) {
+    var indexes;
+    /*for ( let i= current; i < arr.length(); i++)
+    {
+      if( arr[i].name == match)
+      {
+        indexes= i;
+        break;
+      }
+    }*/
+    return 4;
   }
 
 
@@ -517,7 +517,7 @@ useEffect(() => {
       onDropDelete={(e) => onDropDelete(e)}
       onDragStart={(ev, id) => onDragStart(ev, id)}
       onDragStartDelete={(ev, id) => onDragStartDelete(ev, id)}
-      myMove={() => runCode()}
+      myMove={() => play()}
       handleClose = {handleClose}
       stepsStars={stepsStars}
       stars={stars}
